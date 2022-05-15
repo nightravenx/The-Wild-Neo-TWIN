@@ -52,6 +52,11 @@ default turn = True
 default dmgto = 0
 
 label bttle:
+    scene bg wild battle
+    show kanon o:
+        xalign 0.85
+        yalign 1.0
+        zoom 1.5
     show screen mainbattle
     window hide
     pause
@@ -104,7 +109,7 @@ screen moves:
             action Hide("moves"), Jump("bttle")
         vbox:
             xalign 0.2
-            yalign 0.5
+            yalign 0.6
             spacing 0.05
             hbox:
                 spacing 40
