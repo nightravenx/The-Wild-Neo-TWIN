@@ -12,7 +12,7 @@ style button_font:
     hover_color "#b96900"
 
 #Stats
-default playerhp = 200
+define playerhp = 200
 default playersp = 100
 default playeratk = 100
 default playerdef = 100
@@ -37,7 +37,7 @@ default crt = 0
 
 default atk = "" #["fire", "water", "wind", "earth", "normal"]
 default defe = "" #["fire", "water", "wind", "earth", "normal"]
-default enemydefelement = "" #["fire", "water", "wind", "earth", "normal"]
+default enemydefelement = "normal" #["fire", "water", "wind", "earth", "normal"]
 
 default damage = 1
 default multiplier = 1
@@ -52,14 +52,39 @@ default turn = True
 default dmgto = 0
 
 label bttle:
-    scene bg wild battle
+    show bg wild battle
     show kanon o:
         xalign 0.85
         yalign 1.0
         zoom 1.5
+    show screen playerstatbar
     show screen mainbattle
     window hide
     pause
+    
+
+label bttlestart:
+    show screen mainbattle
+    window hide
+    pause    
+
+label attackmove:
+    show screen moves
+    window hide
+    pause
+
+screen playerstatbar:
+    vbox:
+        xalign 0.85
+        yalign 0.6
+        bar value AnimatedValue(playerhp, range=100.0):
+            xalign 0.0
+            yalign 0.0
+            xmaximum 500
+            left_bar Frame("images/Bar/health_full.png", 10, 0)
+            right_bar Frame("images/Bar/health_empty.png", 0, 0, 10)
+            thumb None
+            bar_vertical False
     
 screen mainbattle:
     frame:
@@ -92,6 +117,7 @@ screen mainbattle:
                 xysize(242,43)
                 style "move_button"
                 action Hide("mainbattle"), Jump("attackmove")
+    
             
 screen moves:
     frame:
@@ -106,7 +132,7 @@ screen moves:
             text "Back" xalign 0.5 yalign 0.5 style ("button_font")
             xysize(242,43)
             style "move_button"
-            action Hide("moves"), Jump("bttle")
+            action Hide("moves"), Jump("bttlestart")
         vbox:
             xalign 0.2
             yalign 0.6
@@ -117,32 +143,28 @@ screen moves:
                     text "Fireball" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(242,43)
                     style "move_button"
-                    action Hide("moves"), Jump("checkeffective")
+                    action Hide("moves"), Jump("test"), SetVariable("atk", "fire")
                 button:
                     text "Wind Blade" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(242,43)
                     style "move_button"
-                    action Hide("moves"), Jump("checkeffective")
+                    action Hide("moves"), Jump("bttlestart"), SetVariable("atk", "wind")
             hbox:
                 spacing 40
                 button:
                     text "Rock Throw" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(242,43)
                     style "move_button"
-                    action Hide("moves"), Jump("checkeffective")
+                    action Hide("moves"), Jump("bttlestart"), SetVariable("atk", "earth")
                 button:
                     text "Bubble Gun" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(242,43)
                     style "move_button"
-                    action Hide("moves"), Jump("checkeffective")
+                    action Hide("moves"), Jump("bttlestart"), SetVariable("atk", "water")
 
-label attackmove:
-    show screen moves
-    pause
-
-
-
-
+label test:
+    $playerhp -= 20
+    jump bttlestart
 
 label checkeffective: #calculates effectiveness of an attack
     call critrate #look if the attack crits or not
