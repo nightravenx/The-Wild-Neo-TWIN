@@ -36,7 +36,7 @@ label start:
     # jump bttle
 
 
-
+#Input nama karakter utama
     "Hey nak, bangun, pakaianmu sangat kumuh, aku bahkan tidak tau kamu itu laki-laki atau perempuan"
     menu:
         "Laki-laki":
