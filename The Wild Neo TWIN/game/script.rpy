@@ -631,6 +631,9 @@ label start:
     $ renpy.pause(1, hard=True)
     hide diam mika with dissolve
     hide diam tb with dissolve
+    
+    call battle #to battle screen
+
 
     # show diam mika at left
     # with dissolve
