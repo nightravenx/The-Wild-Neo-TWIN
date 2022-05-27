@@ -3,15 +3,20 @@
 
 #Style
 style move_button:
-    background Frame("images/Button/buttonmove_idle.png", 500, 200)
-    hover_background Frame("images/Button/buttonmove_hover.png", 500, 200)
+    background Frame("images/UI/button 2.png", 0, 0)
+    hover_background Frame("images/UI/button 2.png", 0, 0)
 style button_font:
     font "fonts/rexlia rg.otf"
-    size 25
-    color "#000000"
-    hover_color "#b96900"
+    size 35
+    color "#eeeeee"
+    hover_color "#9fbbf0"
+    italic True
 style black_font:
     color "#000000"
+    font "fonts/Rounded_Elegance.ttf"
+style white_font:
+    color "#FFFFFF"
+    font "fonts/Rounded_Elegance.ttf"
 
 #Transforms
 transform alpha_dissolve:
@@ -24,17 +29,14 @@ transform alpha_dissolve:
 #Player Stats
 define playermaxhp = 200
 define playercurhp = 200
-define playersp = 100
 define playeratk = 100
 define playerdef = 100
-define playerspd = 100
 
 #Enemy Stats
 define enemymaxhp = 200
 define enemycurhp = 200
 define enemyatk = 100
 define enemydef = 100
-define enemyspd = 50
 
 #Move dmg temp
 define Fireball = 30 #IPA
@@ -54,13 +56,16 @@ define crit = False
 define crt = 0
 
 #Elements
-define atk = "" #["Fire", "Water", "Wind", "Earth", "normal"]
-define defe = "Wind" #["Fire", "Water", "Wind", "Earth", "normal"]
-define enemydefelement = "Wind" #["Fire", "Water", "Wind", "Earth", "normal"]
+define atklist = ["Fire", "Wind", "Earth", "Water", "Normal"]
+define atk = ""
+define defelist = ["Fire", "Wind", "Earth", "Water", "Normal"]
+define defe = ""
 define movename = ""
 
-#Effectiveness dialogue var
+#Other
 define effectivedesc = ""
+define turndesc = "YOUR TURN"
+define turndesccol = "#81ee57" #"#81ee57" "#a13e3e"
 
 #Dmg Calculations
 define damage = 1
@@ -80,6 +85,7 @@ define dmgto = 0
 
 #Trivia Vars
 define dummy = False #Question dummy
+define canAttack = False
 default quizquestion = 0
 default z = 0
 default asks = ""
@@ -90,6 +96,7 @@ default answers2 = ""
 default answers3 = ""
 default answercheck = ""
 
+
 #Screens
 #Timer bar
 $ time = 800 # time in ticks (eg. 800 = 8 seconds)
@@ -97,135 +104,191 @@ $ timer_range = 800
 $ timer_jump = 'checkquiz1'
 
 screen countdown:
-    text "Time Limit" xalign 0.5 yalign 0.65 style ("black_font")
+    text "Time Limit" xalign 0.5 yalign 0.70 style ("black_font") at alpha_dissolve
     timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 1), false=[Hide('countdown'), Jump(timer_jump)])
-    bar value time range timer_range xalign 0.5 yalign 0.7 xmaximum 600 at alpha_dissolve:
+    bar value time range timer_range xalign 0.5 yalign 0.75 xmaximum 600 at alpha_dissolve:
         left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
 
 
 #HP Bars Animations
 screen hpbar:
-    text "HP: [playercurhp]/[playermaxhp]" xalign 0.98 yalign 0.65 style ("black_font")
-    bar value AnimatedValue(playercurhp, range=playermaxhp):
-        xalign 0.98 yalign 0.70 xmaximum 300 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+    text "{b}HP{/b}" xalign 0.085   yalign 0.1 style ("white_font") at alpha_dissolve
+    bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
+        xalign 0.15 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
-    text "Enemy HP: [enemycurhp]/[enemymaxhp]" xalign 0.02 yalign 0.05 style ("black_font")
-    bar value AnimatedValue(enemycurhp, range=enemymaxhp):
-        xalign 0.02 yalign 0.10 xmaximum 300 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+    text "{b}HP{/b}" xalign 0.9185 yalign 0.1 style ("white_font") at alpha_dissolve
+    bar value AnimatedValue(enemycurhp, range=enemymaxhp) at alpha_dissolve:
+        xalign 0.85 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
 #Ability Menu
-screen mainbattle:
-    frame:
-        xalign 0.5
-        yalign 1.0
+# screen mainbattle:
+#     frame:
+#         xalign 0.5
+#         yalign 1.0
+#         xsize 1980
+#         ysize 300
+#         background Frame("images/UI/nn.png")
+#         vbox:
+#             xalign 0.2
+#             yalign 0.5
+#             spacing 0.05
+#             button:
+#                 focus_mask True
+#                 text "Attack" xalign 0.5 yalign 0.5 style ("button_font")
+#                 xysize(242,43)
+#                 style "move_button"
+#                 action Hide("mainbattle"), Jump("attackmove")
+#             button:
+#                 focus_mask True
+#                 text "Items" xalign 0.5 yalign 0.5 style ("button_font")
+#                 xysize(242,43)
+#                 style "move_button"
+#                 action Hide("mainbattle"), Jump("attackmove")
+#             button:
+#                 focus_mask True
+#                 text "Heal" xalign 0.5 yalign 0.5 style ("button_font")
+#                 xysize(242,43)
+#                 style "move_button"
+#                 action Hide("mainbattle"), Jump("attackmove")
+#             button:
+#                 focus_mask True
+#                 text "Run" xalign 0.5 yalign 0.5 style ("button_font")
+#                 xysize(242,43)
+#                 style "move_button"
+#                 action Hide("mainbattle"), Jump("attackmove")
+#Screen untuk menu
+screen menu_frame:
+    frame at alpha_dissolve:
+        xalign 0.5 yalign 0.5
+        xsize 1500
+        ysize 800
+        background Frame("images/UI/3.png")
+#Screen Health
+screen healths:
+    frame at alpha_dissolve:
+        xalign 0.5 yalign 0
         xsize 1980
-        ysize 300
-        background Frame("images/Screen/platform.png")
-        vbox:
-            xalign 0.2
-            yalign 0.5
-            spacing 0.05
-            button:
-                focus_mask True
-                text "Attack" xalign 0.5 yalign 0.5 style ("button_font")
-                xysize(242,43)
-                style "move_button"
-                action Hide("mainbattle"), Jump("attackmove")
-            button:
-                focus_mask True
-                text "Items" xalign 0.5 yalign 0.5 style ("button_font")
-                xysize(242,43)
-                style "move_button"
-                action Hide("mainbattle"), Jump("attackmove")
-            button:
-                focus_mask True
-                text "Heal" xalign 0.5 yalign 0.5 style ("button_font")
-                xysize(242,43)
-                style "move_button"
-                action Hide("mainbattle"), Jump("attackmove")
-            button:
-                focus_mask True
-                text "Run" xalign 0.5 yalign 0.5 style ("button_font")
-                xysize(242,43)
-                style "move_button"
-                action Hide("mainbattle"), Jump("attackmove")
-    
+        ysize 200
+        background Frame("images/UI/3.png")
+        text "{i}Player{/i}" xalign 0.135 yalign 0.35 font "fonts/rexlia rg.otf"
+        text "{i}Enemy{/i}" xalign 0.87 yalign 0.35 font "fonts/rexlia rg.otf"
+        text "{color=[turndesccol]}[turndesc]{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
 #Attack Menu
 screen moves:
-    frame:
+    frame at alpha_dissolve:
         xalign 0.5
-        yalign 1.0
+        yalign 1.02
         xsize 1980
-        ysize 300
-        background Frame("images/Screen/platform.png")
-        button:
-            xalign 0.75
-            yalign 0.5
-            text "Back" xalign 0.5 yalign 0.5 style ("button_font")
-            xysize(242,43)
-            style "move_button"
-            action Hide("moves"), Jump("battlestart")
+        ysize 360
+        background Frame("images/UI/nn.png")
         vbox:
-            xalign 0.2
-            yalign 0.5
-            spacing 0.05
+            xalign 0.23
+            yalign 0.82
+            spacing 0
             hbox:
-                spacing 40
+                spacing 100
                 button:
                     text "Fireball" xalign 0.5 yalign 0.5 style ("button_font")
-                    xysize(242,43)
+                    xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Fire"), SetVariable("movename", "Fireball"), SetVariable("movedmg", Fireball), Jump("trivia")
+                    action Hide("moves"), SetVariable("atk", "[atklist[0]]"), SetVariable("movename", "Fireball"), SetVariable("movedmg", Fireball), Jump("trivia")
                 button:
                     text "Wind Blade" xalign 0.5 yalign 0.5 style ("button_font")
-                    xysize(242,43)
+                    xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Wind"), SetVariable("movename", "Wind Blade"), SetVariable("movedmg", Wind_blade), Jump("checkeffective1")
+                    action Hide("moves"), SetVariable("atk", "[atklist[1]]"), SetVariable("movename", "Wind Blade"), SetVariable("movedmg", Wind_blade), Jump("trivia")
             hbox:
-                spacing 40
+                spacing 100
                 button:
                     text "Rock Throw" xalign 0.5 yalign 0.5 style ("button_font")
-                    xysize(242,43)
+                    xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Earth"), SetVariable("movename", "Rock Throw"), SetVariable("movedmg", rock_throw), Jump("checkeffective1")
+                    action Hide("moves"), SetVariable("atk", "[atklist[2]]"), SetVariable("movename", "Rock Throw"), SetVariable("movedmg", rock_throw), Jump("trivia")
                 button:
                     text "Bubble Stream" xalign 0.5 yalign 0.5 style ("button_font")
-                    xysize(242,43)
+                    xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Water"), SetVariable("movename", "Bubble Stream"), SetVariable("movedmg", bubble_stream), Jump("checkeffective1")
+                    action Hide("moves"), SetVariable("atk", "[atklist[3]]"), SetVariable("movename", "Bubble Stream"), SetVariable("movedmg", bubble_stream), Jump("trivia")
+
+screen shield:
+    frame at alpha_dissolve:
+        xalign 0.5
+        yalign 1.02
+        xsize 1980
+        ysize 360
+        background Frame("images/UI/nn.png")
+        vbox:
+            xalign 0.23
+            yalign 0.82
+            spacing 0
+            hbox:
+                spacing 100
+                button:
+                    text "Fire" xalign 0.5 yalign 0.5 style ("button_font")
+                    xysize(500,90)
+                    style "move_button"
+                    action Hide("shield"), SetVariable("defe", "Fire"), Jump("defense")
+                button:
+                    text "Wind" xalign 0.5 yalign 0.5 style ("button_font")
+                    xysize(500,90)
+                    style "move_button"
+                    action Hide("shield"), SetVariable("defe", "Wind"), Jump("defense")
+            hbox:
+                spacing 100
+                button:
+                    text "Earth" xalign 0.5 yalign 0.5 style ("button_font")
+                    xysize(500,90)
+                    style "move_button"
+                    action Hide("shield"), SetVariable("defe", "Earth"), Jump("defense")
+                button:
+                    text "Water" xalign 0.5 yalign 0.5 style ("button_font")
+                    xysize(500,90)
+                    style "move_button"
+                    action Hide("shield"), SetVariable("defe", "Water"), Jump("defense")
 
 
 #Start Mechanism
 #Start battle (called only once from script.rpy)
 label battle:
-    scene bg wild battle with fade
-    show kanon o:
-        xalign 0.83
+    scene bg portal with fade
+    show enemy f:
+        xalign 0.85 #78
+        yalign 1.0 #15
+        zoom 1.5
+    show mika s:
+        xalign 0.15
         yalign 1.0
         zoom 1.5
-    window hide
+    window hide dissolve
+    show screen healths
     show screen hpbar
-    show screen mainbattle
+    show screen moves
 
     $renpy.random.shuffle(trivIPA) #Randomize the trivia beforehand
 
     $renpy.pause(None,hard=True)
     
 #Ability Menu (Attack, Items, etc.)
-label battlestart:
-    window hide
-    show screen mainbattle
-    $renpy.pause(None,hard=True)    
+# label battlestart:
+#     window hide
+#     show screen mainbattle
+#     $renpy.pause(None,hard=True)    
 
 #Attack Menu
 label attackmove:
-    window hide
+    window hide dissolve
     show screen moves
+    $renpy.pause(None,hard=True)
+
+label defensemove:
+    window hide dissolve
+    show screen shield
     $renpy.pause(None,hard=True)
 
 #Trivia initiations
 label trivia:
+    "[atk]"
     $ quizquestion = trivIPA[z]
     $ asks = quizquestion["question"]
     $ answers = quizquestion["answer"]
@@ -242,6 +305,7 @@ label trivia1:
     $ time = 800
     $ timer_range = 800
     $ timer_jump = 'checkquiz1'
+    show screen menu_frame
     show screen countdown
     menu:
         "{color=#E25822}{b}[atk] Trivia{/b}{/color}\n
@@ -261,19 +325,30 @@ label trivia1:
 label checkquiz1:
     #If correct
     if answercheck == corrects:
-        hide screen countdown
-        window show
-        $movedmg *= 1.1
+        $Hide("countdown", transition=Dissolve(1.0))()
+        $Hide("menu_frame", transition=Dissolve(1.0))()
+        
+        window show dissolve
+        $movedmg *= 1
         $movedmg = int(movedmg)
-        "Trivia answer is correct! Move DMG increased by 10%%"
+        $canAttack = True
+        "Trivia benar! Serangan berhasil menyerang musuh."
 
     #If incorrect
+    elif answercheck == "":
+        $Hide("countdown", transition=Dissolve(1.0))()
+        $Hide("menu_frame", transition=Dissolve(1.0))()
+
+        window show dissolve
+        $canAttack = False
+        "Waktu habis! Serangan gagal menyerang musuh."
     else:
-        hide screen countdown
-        window show
-        $movedmg *= 0.5
-        $movedmg = int(movedmg)
-        "Trivia answer is incorrect! Move DMG decreased by 50%%"
+        $Hide("countdown", transition=Dissolve(1.0))()
+        $Hide("menu_frame", transition=Dissolve(1.0))()
+       
+        window show dissolve
+        $canAttack = False
+        "Trivia salah! Serangan gagal menyerang musuh."
 
     #Questions Index
     $z +=1
@@ -363,14 +438,15 @@ label critrate: #calculates crit
     return
 
 label attack: #damaging part
-    window show
+    window show dissolve
     if turn == True: #player turn
-        "You used [movename]."
-        $dmgto = playeratk + movedmg - enemydef
-        $dmgto = int(dmgto)
-        $enemycurhp -= dmgto
-        if enemycurhp <= 0:
-            $enemycurhp = 0
+        if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
+            "Kamu menggunakan [movename]."
+            $dmgto = playeratk + movedmg - enemydef
+            $dmgto = int(dmgto)
+            $enemycurhp -= dmgto
+            if enemycurhp <= 0:
+                $enemycurhp = 0
     else: #enemy turn
         $dmgto = enemyatk + movedmg - playerdef
         $dmgto = int(dmgto)
@@ -380,45 +456,51 @@ label attack: #damaging part
 
     #Dialogue on enemy's turn
     if turn == False:
-        "Enemy deals [dmgto]."
+        "Enemy memberikan serangan sebesar [dmgto]."
 
     #Dialogue on player's turn
     else:
-        "You deal [dmgto]."
-        if effectivedesc == "not very effective":
-            "It's not very effective."
-        elif effectivedesc == "very effective":
-            "It's very effective."
+        if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
+            "Kamu memberikan serangan sebesar [dmgto]."
+
+            if dmgto > 0:
+                if effectivedesc == "not very effective":
+                    "Serangan tidak efektif."
+                elif effectivedesc == "very effective":
+                    "Serangan sangat efektif."
     
     #Dialogue if crits
     if crit == True:
-        "It's critical hit."
-    $movedmg = 1 #reset the move dmg (i forgot why i put this here)
+        "Serangan kritis!"
+    $movedmg = 0 #reset the move dmg
+    $canAttack = False #reset
 
     #Refresh HP Bar
     $renpy.restart_interaction()
 
     #Going back to script.rpy if either sides died
     if playercurhp <= 0:
-        "You lost."
+        "Kamu kalah!"
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
-        hide screen hpbar
+        $Hide("hpbar", transition=Dissolve(1.0))()
         return
     elif enemycurhp <= 0:
-        "You won."
+        "Kamu menang!"
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
-        hide screen hpbar
+        $Hide("hpbar", transition=Dissolve(1.0))()
         return
 
     #If neither sides died yet
     else:
         call switch
         if turn == False:
-            jump autodmg
+            jump defensemove
         else:
-            jump battlestart
+            jump attackmove
+
+label defense:
 
 
 label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max range)
@@ -428,8 +510,12 @@ label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max r
 label switch: #switch turn
     if turn == True:
         $turn = False
+        $turndesc = "ENEMY TURN"
+        $turndesccol = "#a13e3e"
     else:
         $turn = True
+        $turndesc = "YOUR TURN"
+        $turndesccol = "#81ee57"
     return
 
 
