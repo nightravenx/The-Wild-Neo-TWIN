@@ -110,7 +110,7 @@ init:
         "correct" : "Bawang merah, bawang putih, dan bawang bombay"},
 
         {"question" : "Di bawah ini yang merupakan ciri bunga yang penyerbukannya dibantu oleh hewan adalah ....", 
-        "answer" : ["Kepala putik agak tersembunyi", "mahkota tidak berwarna mencolok", "Serbuk sari kering", "Mahkota bunga kecil"], 
+        "answer" : ["Kepala putik agak tersembunyi", "Mahkota tidak berwarna mencolok", "Serbuk sari kering", "Mahkota bunga kecil"], 
         "correct" : "Kepala putik agak tersembunyi"},
 
         {"question" : "Setelah penyerbukan maka akan terjadi proses pembuahan (fertilisasi) yang terjadi di ....", 
