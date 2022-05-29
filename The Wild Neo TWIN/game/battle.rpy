@@ -56,11 +56,11 @@ define crit = False
 define crt = 0
 
 #Elements
-define atklist = ["Fire", "Wind", "Earth", "Water", "Normal"]
+define atklist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define atk = ""
-define defelist = ["Fire", "Wind", "Earth", "Water", "Normal"]
+define defelist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define defe = ""
-define enemydefe = "Normal" #["Fire", "Wind", "Earth", "Water", "Normal"]
+define enemydefe = "Physical" #["Fire", "Wind", "Earth", "Water", "Physical"]
 define movename = ""
 
 #Other
