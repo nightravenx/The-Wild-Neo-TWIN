@@ -40,9 +40,10 @@ define enemydef = 100
 
 #Move dmg temp
 define Fireball = 30 #IPA
-define Wind_blade = 25 #Math
-define rock_throw = 35 #IPS
-define bubble_stream = 40 #Indo
+define Wind_Blade = 32 #Math
+define Rock_Throw = 40 #IPS
+define Water_Stream = 38 #Indo
+define Punch = 40
 
 
 #Calculation Variables
@@ -56,6 +57,8 @@ define crit = False
 define crt = 0
 
 #Elements
+define movelist = ["Fireball", "Wind Blade", "Rock Throw", "Water Stream", "Punch"]
+define tempmovelist = ["Fireball", "Wind Blade", "Rock Throw", "Water Stream", "Punch"]
 define atklist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define atk = ""
 define defelist = ["Fire", "Wind", "Earth", "Water", "Physical"]
@@ -99,6 +102,21 @@ default answers2 = ""
 default answers3 = ""
 default answercheck = ""
 
+define movename = ""
+define movename1 = ""
+define movename2 = ""
+define movename3 = ""
+define movename4 = ""
+define moveend = ""
+
+label moveinit:
+    $renpy.random.shuffle(tempmovelist)
+    $movename = tempmovelist[0]
+    $movename1 = tempmovelist[1]
+    $movename2 = tempmovelist[2]
+    $movename3 = tempmovelist[3]
+    $movename4 = tempmovelist[4]
+    return
 
 #Screens
 #Timer bar
@@ -191,30 +209,60 @@ screen moves:
             xalign 0.23
             yalign 0.82
             spacing 0
+                
             hbox:
-                spacing 100
+                spacing 0
                 button:
-                    text "Fireball" xalign 0.5 yalign 0.5 style ("button_font")
+                    text "[movename]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Fire"), SetVariable("movename", "Fireball"), SetVariable("movedmg", Fireball), SetVariable("atkcol", "#E25822"), Jump("trivia")
+                    action Hide("moves"), SetVariable("moveend", movename), Jump("initmovevar")
                 button:
-                    text "Wind Blade" xalign 0.5 yalign 0.5 style ("button_font")
+                    text "[movename1]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Wind"), SetVariable("movename", "Wind Blade"), SetVariable("movedmg", Wind_blade), SetVariable("atkcol", "#61ffb0"), Jump("trivia")
+                    action Hide("moves"), SetVariable("moveend", movename1), Jump("initmovevar")
             hbox:
-                spacing 100
+                spacing 0
                 button:
-                    text "Rock Throw" xalign 0.5 yalign 0.5 style ("button_font")
+                    text "[movename2]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Earth"), SetVariable("movename", "Rock Throw"), SetVariable("movedmg", rock_throw), SetVariable("atkcol", "#b17837"), Jump("trivia")
+                    action Hide("moves"), SetVariable("moveend", movename2), Jump("initmovevar")
                 button:
-                    text "Bubble Stream" xalign 0.5 yalign 0.5 style ("button_font")
+                    text "[movename3]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("atk", "Water"), SetVariable("movename", "Bubble Stream"), SetVariable("movedmg", bubble_stream), SetVariable("atkcol", "#55bbff"), Jump("trivia")
+                    action Hide("moves"), SetVariable("moveend", movename3), Jump("initmovevar")
+
+label initmovevar:
+    if moveend == "Fireball":
+        $atk = "Fire"
+        $movename = moveend
+        $movedmg = Fireball
+        $atkcol = "#E25822"
+    elif moveend == "Wind Blade":
+        $atk = "Wind"
+        $movename = moveend
+        $movedmg = Wind_Blade
+        $atkcol = "#61ffb0"
+    elif moveend == "Rock Throw":
+        $atk = "Earth"
+        $movename = moveend
+        $movedmg = Rock_Throw
+        $atkcol = "#b17837"
+    elif moveend == "Water Stream":
+        $atk = "Water"
+        $movename = moveend
+        $movedmg = Water_Stream
+        $atkcol = "#55bbff"
+    else:
+        $atk = "Physical"
+        $movename = moveend
+        $movedmg = Punch
+        $atkcol = "#cccccc"
+    jump trivia
+            
 
 screen shield:
     frame at alpha_dissolve:
@@ -269,6 +317,7 @@ label battle:
     window hide dissolve
     show screen healths
     show screen hpbar
+    call moveinit
     show screen moves
 
     $renpy.random.shuffle(trivIPA) #Randomize the trivia beforehand
@@ -284,6 +333,7 @@ label battle:
 #Attack Menu
 label attackmove:
     window hide dissolve
+    call moveinit
     show screen moves
     $renpy.pause(None,hard=True)
 
@@ -512,7 +562,7 @@ label attack: #damaging part
         else:
             jump attackmove
 
-# label defense:
+label defense:
 
 
 label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max range)
