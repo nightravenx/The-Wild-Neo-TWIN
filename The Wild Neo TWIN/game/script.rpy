@@ -35,18 +35,18 @@ define fadehold = Fade(0.5, 1.0, 0.5)
 define whiteflash = Fade(0.1, 0.0, 0.5, color="#fff")
 define redflash = Fade(0.1, 0.0, 0.5, color="#f00")
 
-image diam mika:
-    "mika.png"
-    pause .001
-    im.MatrixColor("mika.png",im.matrix.brightness(-0.5))
-image diam miko:
-    "miko.png"
-    pause .001
-    im.MatrixColor("miko.png",im.matrix.brightness(-0.5))
-image diam tb:
-    "timebandit merah.png"
-    pause .001
-    im.MatrixColor("timebandit merah.png",im.matrix.brightness(-0.5))
+# image diam mika:
+#     "mika.png"
+#     pause .001
+#     im.MatrixColor("mika.png",im.matrix.brightness(-0.5))
+# image diam miko:
+#     "miko.png"
+#     pause .001
+#     im.MatrixColor("miko.png",im.matrix.brightness(-0.5))
+# image diam tb merah:
+#     "tb merah.png"
+#     pause .001
+#     im.MatrixColor("tb merah.png",im.matrix.brightness(-0.5))
 label start:
     # "Hey nak, bangun, pakaianmu sangat kumuh, aku bahkan tidak tau kamu itu laki-laki atau perempuan"
     # menu:
@@ -88,7 +88,7 @@ label start:
     with Dissolve(1)
     $ renpy.pause(1, hard=True)
 # shot no 5
-    scene workshop
+    scene lab
     show miko at left:
         xalign 0.05
     show mika at right:
@@ -133,7 +133,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 7
-    scene workshop
+    scene lab
     show miko at left:
 
         xalign 0.05
@@ -308,7 +308,7 @@ label start:
     hide mika with dissolve
     hide miko with dissolve
 # shot no 11
-    "(Miko dan Mika mulai membentuk portal waktu di workshop mereka){w=3}{nw}"
+    "(Miko dan Mika mulai membentuk portal waktu di lab mereka){w=3}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     "(Clink! Clank!){w=3}{nw}"
@@ -318,7 +318,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 12
-    scene di depan portal waktu
+    scene portal
     show miko at left:
         xalign 0.05
     show mika at right:
@@ -395,11 +395,11 @@ label start:
     "*shiiiing* *BAAAM*{w=2}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
-    "(Sinar putih yang begitu terang disertai dentuman besar mengisi workshop.){w=4}{nw}"
+    "(Sinar putih yang begitu terang disertai dentuman besar mengisi lab.){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 16
-    "(Kondisi workshop kembali tenang, portal waktu tidak mengeluarkan cahaya dan suara yang bising lagi){w=4}{nw}"
+    "(Kondisi lab kembali tenang, portal waktu tidak mengeluarkan cahaya dan suara yang bising lagi){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     "(Miko dan Mika yang sempat terlempar ke lantai, berdiri lagi dan langsung mengecek mesin){w=4}{nw}"
@@ -495,7 +495,7 @@ label start:
     hide mika with dissolve
     hide miko with dissolve
 # shot no 18
-    "(Tanpa disadari sebelumnya, ada orang asing yang tiba-tiba muncul di workshop mereka){w=4}{nw}"
+    "(Tanpa disadari sebelumnya, ada orang asing yang tiba-tiba muncul di lab mereka){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     "(Seorang pemuda kisaran usia 20 tahun yang memiliki tampilan unik, mengenakan pakaian yang dilengkapi banyak peralatan memburu){w=4}{nw}"
@@ -505,7 +505,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 19
-    show timebandit merah at right:
+    show tb merah at right:
         xalign 0.9
     show miko at left:
         xalign 0.05
@@ -530,14 +530,14 @@ label start:
     show diam mika at left:
         xalign 0.3
     with dissolve
-    show diam tb at right:
+    show diam tb merah at right:
         xalign 0.9
     with dissolve
     miko "Hei siapa kamu?!"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide diam mika with dissolve
-    hide diam tb with dissolve
+    hide diam tb merah with dissolve
 
     show diam miko at left:
         xalign 0.05
@@ -554,14 +554,14 @@ label start:
     show diam miko at left:
         xalign 0.05
     with dissolve
-    show diam tb at right:
+    show diam tb merah at right:
         xalign 0.95
     with dissolve
     mika "Ya! Siapa kamu dan kenapa ada disini?!"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide diam miko with dissolve
-    hide diam tb with dissolve
+    hide diam tb merah with dissolve
 
     show diam mika at left:
         xalign 0.3
@@ -578,14 +578,14 @@ label start:
     show diam mika at left:
         xalign 0.3
     with dissolve
-    show diam tb at right:
+    show diam tb merah at right:
         xalign 0.95
     with dissolve
     miko "Kami?"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide diam mika with dissolve
-    hide diam tb with dissolve
+    hide diam tb merah with dissolve
 
     show diam mika at left:
         xalign 0.3
@@ -602,14 +602,14 @@ label start:
     show diam miko at left:
         xalign 0.05
     with dissolve
-    show diam tb at right:
+    show diam tb merah at right:
         xalign 0.95
     with dissolve
     mika "Tapi, kamu kan sendirian..."
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide diam miko with dissolve
-    hide diam tb with dissolve
+    hide diam tb merah with dissolve
 
     show diam mika at left:
         xalign 0.3
@@ -625,7 +625,7 @@ label start:
     hide diam mika with dissolve
     hide diam miko with dissolve
 
-    hide timebandit merah with dissolve
+    hide tb merah with dissolve
     hide mika with dissolve
     hide miko with dissolve
 # shot no 20
@@ -685,7 +685,7 @@ label start:
     hide mika with dissolve
     hide miko with dissolve
 # shot no 21
-    show timebandit merah at right
+    show tb merah at right
     show miko at left:
         xalign 0.05
     show mika at left:
@@ -694,14 +694,14 @@ label start:
     show diam mika at left:
         xalign 0.95
     with dissolve
-    show diam tb at right
+    show diam tb merah at right
     with dissolve
     miko "Hei! Kami tidak tahu kamu siapa dan darimana, tapi kami tau kamu bukan orang yang baik!"
     miko "Tidak akan kami biarkan kamu memburu dan menangkap hewan di bumi ini!"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide diam mika with dissolve
-    hide diam tb with dissolve
+    hide diam tb merah with dissolve
 
     call battle #pindah ke battle screen
 
@@ -727,13 +727,13 @@ label start:
 
         # xalign 0.05
     # with dissolve
-    # show diam tb at right
+    # show diam tb merah at right
     # with dissolve
     # miko "Hei siapa kamu?!"
     # with Dissolve(0.5)
     # $ renpy.pause(0.5, hard=True)
     # hide diam mika with dissolve
-    # hide diam tb with dissolve
+    # hide diam tb merah with dissolve
     #
     # show diam mika at left:
 
@@ -751,18 +751,18 @@ label start:
     # show diam miko at left:
         # xalign 0.05
     # with dissolve
-    # show diam tb at right
+    # show diam tb merah at right
     # with dissolve
     # mika "Ya! Siapa kamu dan kenapa ada disini?!"
     # with Dissolve(0.5)
     # $ renpy.pause(0.5, hard=True)
     # hide diam miko with dissolve
-    # hide diam tb with dissolve
+    # hide diam tb merah with dissolve
 
-    hide timebandit merah with dissolve
+    hide tb merah with dissolve
     hide mika with dissolve
     hide miko with dissolve
-    scene di depan portal waktu with fade()
+    scene portal with fade()
 
 
     "Tamat."
