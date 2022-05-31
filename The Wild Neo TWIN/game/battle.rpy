@@ -306,14 +306,14 @@ screen shield:
 #Start battle (called only once from script.rpy)
 label battle:
     scene bg portal with fade
-    show enemy f:
+    show timebandit merah:
         xalign 0.85 #78
         yalign 1.0 #15
-        zoom 1.5
-    show mika s:
+        zoom 1.2
+    show mika:
         xalign 0.15
         yalign 1.0
-        zoom 1.5
+        zoom 1.2
     window hide dissolve
     show screen healths
     show screen hpbar
