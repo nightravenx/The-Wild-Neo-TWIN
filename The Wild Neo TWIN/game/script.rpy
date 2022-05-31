@@ -35,6 +35,10 @@ define fadehold = Fade(0.5, 1.0, 0.5)
 define whiteflash = Fade(0.1, 0.0, 0.5, color="#fff")
 define redflash = Fade(0.1, 0.0, 0.5, color="#f00")
 
+style game_tb:
+    background Frame("images/button_idle.png")
+    hover_background Frame("images/button_hover.png")
+
 # image diam mika:
 #     "mika.png"
 #     pause .001
@@ -88,7 +92,7 @@ label start:
     with Dissolve(1)
     $ renpy.pause(1, hard=True)
 # shot no 5
-    scene lab
+    scene bg lab
     show miko at left:
         xalign 0.05
     show mika at right:
@@ -133,7 +137,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 7
-    scene lab
+    scene bg lab
     show miko at left:
 
         xalign 0.05
@@ -318,7 +322,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 12
-    scene portal
+    scene bg portal
     show miko at left:
         xalign 0.05
     show mika at right:
@@ -762,7 +766,7 @@ label start:
     hide tb merah with dissolve
     hide mika with dissolve
     hide miko with dissolve
-    scene portal with fade()
+    scene bg portal with fade()
 
 
     "Tamat."
