@@ -139,6 +139,11 @@ screen hpbar:
     bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
         xalign 0.15 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
+    text "{b}EXP{/b}" xalign 0.085 yalign 0.1 style ("white_font") at alpha_dissolve
+    text "[curexp]/[maxexp]" xalign 0.33 yalign 0.145 style ("white_font") at alpha_dissolve
+    bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
+        xalign 0.15 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+
     text "{b}HP{/b}" xalign 0.9185 yalign 0.1 style ("white_font") at alpha_dissolve
     bar value AnimatedValue(enemycurhp, range=enemymaxhp) at alpha_dissolve:
         xalign 0.85 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
@@ -550,6 +555,8 @@ label attack: #damaging part
         "Kamu menang!"
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
+        $curexp += 15
+        $renpy.restart_interaction()
         $Hide("hpbar", transition=Dissolve(1.0))()
         scene black with fade
         return
@@ -583,3 +590,9 @@ label switch: #switch turn
         $turndesccol = "#81ee57"
         $defe = enemydefe
     return
+
+define curexp = 0
+define maxexp = 100
+define lvl = 1
+define bonusap = 3
+define curap = 0
