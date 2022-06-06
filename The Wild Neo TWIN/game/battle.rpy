@@ -26,6 +26,13 @@ transform alpha_dissolve:
         linear 0.5 alpha 0
 
 #Stats
+#Experience
+define curexp = 0
+define maxexp = 100
+define lvl = 1
+define bonusap = 3
+define curap = 0
+
 #Player Stats
 define playermaxhp = 200
 define playercurhp = 200
@@ -39,11 +46,11 @@ define enemyatk = 100
 define enemydef = 100
 
 #Move dmg temp
-define Fireball = 30 #IPA
-define Wind_Blade = 32 #Math
-define Rock_Throw = 40 #IPS
-define Water_Stream = 38 #Indo
-define Punch = 40
+define Fireball = 50 #IPA
+define Wind_Blade = 50 #Math
+define Rock_Throw = 50 #IPS
+define Water_Stream = 50 #Indo
+define Punch = 50
 
 
 #Calculation Variables
@@ -63,7 +70,7 @@ define atklist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define atk = ""
 define defelist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define defe = ""
-define enemydefe = "Physical" #["Fire", "Wind", "Earth", "Water", "Physical"]
+define enemydefe = "Water" #["Fire", "Wind", "Earth", "Water", "Physical"]
 define movename = ""
 
 #Other
@@ -100,6 +107,7 @@ default corrects = ""
 default answers1 = ""
 default answers2 = ""
 default answers3 = ""
+default answers4 = ""
 default answercheck = ""
 
 define movename = ""
@@ -125,28 +133,27 @@ $ timer_range = 800
 $ timer_jump = 'checkquiz1'
 
 screen countdown:
-    text "Time Limit" xalign 0.5 yalign 0.70 style ("black_font") at alpha_dissolve
+    text "Time Limit" xalign 0.5 yalign 0.72 style ("black_font") at alpha_dissolve
     timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 1), false=[Hide('countdown'), Jump(timer_jump)])
-    bar value time range timer_range xalign 0.5 yalign 0.75 xmaximum 600 at alpha_dissolve:
+    bar value time range timer_range xalign 0.5 yalign 0.77 xmaximum 600 at alpha_dissolve:
         left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
 
 
 #HP Bars Animations
 screen hpbar:
-    text "{b}HP{/b}" xalign 0.085 yalign 0.1 style ("white_font") at alpha_dissolve
-    text "[playercurhp]/[playermaxhp]" xalign 0.33 yalign 0.145 style ("white_font") at alpha_dissolve
+    text "{b}HP{/b}" xalign 0.085 yalign 0.08 style ("white_font") at alpha_dissolve
+    text "[playercurhp]/[playermaxhp]" xalign 0.33 yalign 0.12 style ("white_font") size 27 at alpha_dissolve
     bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
-        xalign 0.15 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+        xalign 0.15 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
-    text "{b}EXP{/b}" xalign 0.085 yalign 0.1 style ("white_font") at alpha_dissolve
-    text "[curexp]/[maxexp]" xalign 0.33 yalign 0.145 style ("white_font") at alpha_dissolve
-    bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
-        xalign 0.15 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+    text "{b}EXP{/b}" xalign 0.082 yalign 0.15 style ("white_font") size 27 at alpha_dissolve
+    bar value AnimatedValue(curexp, range=maxexp) at alpha_dissolve:
+        xalign 0.14 yalign 0.15 xmaximum 400 ysize 20 left_bar Frame("images/Bar/exp_full.png") right_bar Frame("images/Bar/exp_empty.png")
 
-    text "{b}HP{/b}" xalign 0.9185 yalign 0.1 style ("white_font") at alpha_dissolve
+    text "{b}HP{/b}" xalign 0.9185 yalign 0.08 style ("white_font") at alpha_dissolve
     bar value AnimatedValue(enemycurhp, range=enemymaxhp) at alpha_dissolve:
-        xalign 0.85 yalign 0.1 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+        xalign 0.85 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
 #Ability Menu
 # screen mainbattle:
@@ -198,8 +205,8 @@ screen healths:
         xsize 1980
         ysize 210
         background Frame("images/UI/3.png")
-        text "{i}Player{/i}" xalign 0.135 yalign 0.35 font "fonts/rexlia rg.otf"
-        text "{i}Enemy{/i}" xalign 0.87 yalign 0.35 font "fonts/rexlia rg.otf"
+        text "{i}Player{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
+        text "{i}Enemy{/i}" xalign 0.87 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{color=[turndesccol]}[turndesc]{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
 #Attack Menu
 screen moves:
@@ -357,13 +364,14 @@ label trivia:
     $ answers1 = answers[0]
     $ answers2 = answers[1]
     $ answers3 = answers[2]
+    $ answers4 = answers[3]
     $ answercheck = ""
     jump trivia1
 
 #Trivia gui
 label trivia1:
-    $ time = 800
-    $ timer_range = 800
+    $ time = 400
+    $ timer_range = 400
     $ timer_jump = 'checkquiz1'
     show screen menu_frame
     show screen countdown
@@ -379,6 +387,9 @@ label trivia1:
             jump checkquiz1
         "[answers3]":
             $answercheck = answers3
+            jump checkquiz1
+        "[answers4]":
+            $answercheck = answers4
             jump checkquiz1
 
 #Answer check
@@ -546,18 +557,20 @@ label attack: #damaging part
     #Going back to script.rpy if either sides died
     if playercurhp <= 0:
         "Kamu kalah!"
+        
+        $Hide("hpbar", transition=Dissolve(1.0))()
+        $Hide("healths", transition=Dissolve(1.0))()
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
-        $Hide("hpbar", transition=Dissolve(1.0))()
         scene black with fade
         return
     elif enemycurhp <= 0:
         "Kamu menang!"
+        call xpgain
+        $Hide("hpbar", transition=Dissolve(1.0))()
+        $Hide("healths", transition=Dissolve(1.0))()
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
-        $curexp += 15
-        $renpy.restart_interaction()
-        $Hide("hpbar", transition=Dissolve(1.0))()
         scene black with fade
         return
 
@@ -591,8 +604,20 @@ label switch: #switch turn
         $defe = enemydefe
     return
 
-define curexp = 0
-define maxexp = 100
-define lvl = 1
-define bonusap = 3
-define curap = 0
+label xpgain:
+    $curexp += 15 / lvl
+    $curexp = int(curexp)
+    if curexp >= maxexp:
+        $curexp = maxexp
+        $lvl += 1
+        $curexp = 0
+        call apgain
+    $renpy.restart_interaction()
+    $renpy.pause(2.0,hard=True)
+    return
+
+label apgain:
+    $curap += bonusap
+    if lvl % 5 == 0:
+        $bonusap +=1
+    return
