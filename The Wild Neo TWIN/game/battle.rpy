@@ -44,9 +44,9 @@ define truecrit = 1
 
 #Enemy Stats
 define enemymaxhp = 250
-define enemycurhp = 250
+define enemycurhp = 200
 define enemyatk = 100
-define enemydef = 100
+define enemydef = 75
 
 #Move dmg temp
 define Fireball = 50 #IPA
@@ -654,10 +654,5 @@ label apgain:
     $curap += bonusap
     if lvl % 5 == 0:
         $bonusap +=1
+    call upstart
     return
-
-
-
-    
-
-    
