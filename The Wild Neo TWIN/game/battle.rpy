@@ -3,8 +3,8 @@
 
 #Style
 style move_button:
-    background Frame("images/UI/button 2.png", 0, 0)
-    hover_background Frame("images/UI/button 2.png", 0, 0)
+    background Frame("images/UI/button/button 2_idle.png", 0, 0)
+    hover_background Frame("images/UI/button/button 2_hover.png", 0, 0)
 style button_font:
     font "fonts/rexlia rg.otf"
     size 35
@@ -31,17 +31,20 @@ define curexp = 0
 define maxexp = 100
 define lvl = 1
 define bonusap = 3
-define curap = 0
+define curap = 5
+define maxap = 5
 
 #Player Stats
 define playermaxhp = 200
 define playercurhp = 200
 define playeratk = 100
 define playerdef = 100
+define critdmg1 = 100
+define truecrit = 1
 
 #Enemy Stats
-define enemymaxhp = 200
-define enemycurhp = 200
+define enemymaxhp = 250
+define enemycurhp = 250
 define enemyatk = 100
 define enemydef = 100
 
@@ -134,7 +137,7 @@ $ timer_jump = 'checkquiz1'
 
 screen countdown:
     text "Time Limit" xalign 0.5 yalign 0.72 style ("black_font") at alpha_dissolve
-    timer 0.01 repeat True action If(time > 0, true=SetVariable('time', time - 1), false=[Hide('countdown'), Jump(timer_jump)])
+    timer 0.1 repeat True action If(time > 0, true=SetVariable('time', time - 1), false=[Hide('countdown'), Jump(timer_jump)])
     bar value time range timer_range xalign 0.5 yalign 0.77 xmaximum 600 at alpha_dissolve:
         left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
@@ -273,7 +276,7 @@ label initmovevar:
         $movename = moveend
         $movedmg = Punch
         $atkcol = "#cccccc"
-    jump trivia
+    jump initTriv
             
 
 screen shield:
@@ -330,6 +333,7 @@ label battle:
     show screen healths
     show screen hpbar
     call moveinit
+    call randomtriv
     show screen moves
 
     $renpy.random.shuffle(trivIPA) #Randomize the trivia beforehand
@@ -355,23 +359,23 @@ label defensemove:
     $renpy.pause(None,hard=True)
 
 #Trivia initiations
-label trivia:
-    $ quizquestion = trivIPA[z]
-    $ asks = quizquestion["question"]
-    $ answers = quizquestion["answer"]
-    $ corrects = quizquestion["correct"]
-    $ renpy.random.shuffle(answers) #reshuffle answers
-    $ answers1 = answers[0]
-    $ answers2 = answers[1]
-    $ answers3 = answers[2]
-    $ answers4 = answers[3]
-    $ answercheck = ""
-    jump trivia1
+# label trivia:
+#     $ quizquestion = trivIPA[z]
+#     $ asks = quizquestion["question"]
+#     $ answers = quizquestion["answer"]
+#     $ corrects = quizquestion["correct"]
+#     $ renpy.random.shuffle(answers) #reshuffle answers
+#     $ answers1 = answers[0]
+#     $ answers2 = answers[1]
+#     $ answers3 = answers[2]
+#     $ answers4 = answers[3]
+#     $ answercheck = ""
+#     jump trivia1
 
 #Trivia gui
 label trivia1:
-    $ time = 400
-    $ timer_range = 400
+    $ time = 150
+    $ timer_range = 150
     $ timer_jump = 'checkquiz1'
     show screen menu_frame
     show screen countdown
@@ -403,7 +407,10 @@ label checkquiz1:
         $movedmg *= 1
         $movedmg = int(movedmg)
         $canAttack = True
-        "Trivia benar! Serangan berhasil menyerang musuh."
+        if turn == True:
+            "Trivia benar! Serangan berhasil menyerang musuh!"
+        else:
+            "Trivia benar! Perisai berhasil digunakan!"
 
     #If incorrect
     elif answercheck == "":
@@ -411,15 +418,23 @@ label checkquiz1:
         $Hide("menu_frame", transition=Dissolve(1.0))()
 
         window show dissolve
+        $defe = "None"
         $canAttack = False
-        "Waktu habis! Serangan gagal menyerang musuh."
+        if turn == True:
+            "Waktu habis! Serangan gagal menyerang musuh!"
+        else:
+            "Waktu habis! Perisai gagal digunakan!"
     else:
         $Hide("countdown", transition=Dissolve(1.0))()
         $Hide("menu_frame", transition=Dissolve(1.0))()
        
         window show dissolve
+        $defe = "None"
         $canAttack = False
-        "Trivia salah! Serangan gagal menyerang musuh."
+        if turn == True:
+            "Trivia salah! Serangan gagal menyerang musuh!"
+        else:
+            "Trivia salah! Perisai gagal digunakan!"
 
     #Questions Index
     $z +=1
@@ -428,6 +443,16 @@ label checkquiz1:
 
 label checkeffective1: #calculates effectiveness of an attack
     call critrate #look if the attack crits or not
+    if turn == False:
+        if defe == "None":
+            $multiplier = supereffective
+            $movedmg *= multiplier
+            $effectivedesc = "very effective"
+            if crit == True:
+                $truecrit = critdmg1 / 100
+                $movedmg *= critdmg[1] * truecrit
+                $movedmg = int(movedmg)
+            jump attack
     if atk == "Water":
         if defe == "Fire":
             $multiplier = supereffective
@@ -490,9 +515,13 @@ label checkeffective1: #calculates effectiveness of an attack
         $movedmg *= multiplier
         $effectivedesc = "effective"
 
+    
+
     #Crit DMG Calculations
     if crit == True:
-        $movedmg *= critdmg[1]
+        $truecrit = critdmg1 / 100
+        $movedmg *= critdmg[1] * truecrit
+        $movedmg = int(movedmg)
     jump attack
 
 
@@ -519,13 +548,14 @@ label attack: #damaging part
             if enemycurhp <= 0:
                 $enemycurhp = 0
     else: #enemy turn
-        "Kamu menggunakan perisai [defe]."
+        if defe != "None":
+            "Kamu menggunakan perisai [defe]."
         "Musuh menggunakan serangan [atk]."
 
         if effectivedesc == "not very effective":
-            "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan."
+            "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan!"
         elif effectivedesc == "very effective":
-            "Tangkis gagal menahan elemen! Serangan musuh lebih efektif."
+            "Tangkis gagal menahan elemen! Serangan musuh lebih efektif!"
         $dmgto = enemyatk + movedmg - playerdef
         $dmgto = int(dmgto)
         $playercurhp -= dmgto
@@ -541,9 +571,9 @@ label attack: #damaging part
         if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
             if dmgto > 0:
                 if effectivedesc == "not very effective":
-                    "Serangan tidak efektif."
+                    "Serangan kurang efektif!"
                 elif effectivedesc == "very effective":
-                    "Serangan sangat efektif."
+                    "Serangan sangat efektif!"
     
     #Dialogue if crits
     if crit == True:
@@ -556,16 +586,21 @@ label attack: #damaging part
 
     #Going back to script.rpy if either sides died
     if playercurhp <= 0:
-        "Kamu kalah!"
-        
+        "Kamu kalah! Musuh telah memenangkan partarungan."
+        $curexp -= 10
+        if curexp <= 0:
+            $curexp = 0
+        "EXP kamu berkurang 10 karena telah kalah melawan musuh."
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
         scene black with fade
         return
+        
     elif enemycurhp <= 0:
-        "Kamu menang!"
+        "Kamu menang! Musuh berhasil dikalahkan."
+        "Kamu mendapatkan 15 EXP."
         call xpgain
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
@@ -582,14 +617,13 @@ label attack: #damaging part
         else:
             jump attackmove
 
-label defense:
 
 
 label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max range)
     $movedmg = renpy.random.randint(x, y)
     $a = renpy.random.randint(0,4)
     $atk = atklist[a]
-    jump checkeffective1
+    jump initTrivDef
 
 label switch: #switch turn
     $renpy.pause(2.0,hard=True) #for damage animation interval
@@ -621,3 +655,9 @@ label apgain:
     if lvl % 5 == 0:
         $bonusap +=1
     return
+
+
+
+    
+
+    
