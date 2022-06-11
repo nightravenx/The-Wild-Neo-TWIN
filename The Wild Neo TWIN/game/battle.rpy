@@ -1,6 +1,36 @@
 #Battle Script
 #Fire > Wind > Earth > Water > Fire
 
+#Declaring audio
+define fireballsfx = "audio/battle/fireball.mp3"
+define windsfx = "audio/battle/wind.mp3"
+define throwsfx = "audio/battle/throw.mp3"
+define bubblesfx = "audio/battle/bubble.mp3"
+define punchsfx = "audio/battle/punch.mp3"
+
+define audio.battlebgm = "audio/battle/battle.mp3"
+
+define audio.moveSFX = ""
+
+#Animation
+image miko hit animated:
+    "miko hurt"
+    pause 0.1
+    "miko defense"
+    pause 0.1
+    repeat 3
+
+image miko happy animated:
+    "miko senang"
+    pause 1.5
+    "miko biasa"
+
+image miko sad animated:
+    "miko sedih"
+    pause 1.5
+    "miko biasa"
+    
+
 #Style
 style move_button:
     background Frame("images/UI/button/button 2_idle.png", 0, 0)
@@ -46,7 +76,7 @@ define truecrit = 1
 define enemymaxhp = 250
 define enemycurhp = 200
 define enemyatk = 100
-define enemydef = 75
+define enemydef = 70
 
 #Move dmg temp
 define Fireball = 50 #IPA
@@ -67,8 +97,8 @@ define crit = False
 define crt = 0
 
 #Elements
-define movelist = ["Fireball", "Wind Blade", "Rock Throw", "Water Stream", "Punch"]
-define tempmovelist = ["Fireball", "Wind Blade", "Rock Throw", "Water Stream", "Punch"]
+define movelist = ["Fireball", "Wind Blade", "Rock Throw", "Bubble Stream", "Punch"]
+define tempmovelist = ["Fireball", "Wind Blade", "Rock Throw", "Bubble Stream", "Punch"]
 define atklist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define atk = ""
 define defelist = ["Fire", "Wind", "Earth", "Water", "Physical"]
@@ -119,6 +149,7 @@ define movename2 = ""
 define movename3 = ""
 define movename4 = ""
 define moveend = ""
+define elementQuestion = ""
 
 label moveinit:
     $renpy.random.shuffle(tempmovelist)
@@ -131,17 +162,15 @@ label moveinit:
 
 #Screens
 #Timer bar
-$ time = 800 # time in ticks (eg. 800 = 8 seconds)
-$ timer_range = 800
+$ time = 0 # time in ticks (eg. 800 = 8 seconds)
+$ timer_range = 0
 $ timer_jump = 'checkquiz1'
 
 screen countdown:
-    text "Time Limit" xalign 0.5 yalign 0.72 style ("black_font") at alpha_dissolve
+    # text "Time Limit" xalign 0.5 yalign 0.76 style ("black_font") at alpha_dissolve
     timer 0.1 repeat True action If(time > 0, true=SetVariable('time', time - 1), false=[Hide('countdown'), Jump(timer_jump)])
-    bar value time range timer_range xalign 0.5 yalign 0.77 xmaximum 600 at alpha_dissolve:
+    bar value time range timer_range xalign 0.5 yalign 0.81 xmaximum 600 at alpha_dissolve:
         left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
-
-
 
 #HP Bars Animations
 screen hpbar:
@@ -158,49 +187,14 @@ screen hpbar:
     bar value AnimatedValue(enemycurhp, range=enemymaxhp) at alpha_dissolve:
         xalign 0.85 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
-#Ability Menu
-# screen mainbattle:
-#     frame:
-#         xalign 0.5
-#         yalign 1.0
-#         xsize 1980
-#         ysize 300
-#         background Frame("images/UI/nn.png")
-#         vbox:
-#             xalign 0.2
-#             yalign 0.5
-#             spacing 0.05
-#             button:
-#                 focus_mask True
-#                 text "Attack" xalign 0.5 yalign 0.5 style ("button_font")
-#                 xysize(242,43)
-#                 style "move_button"
-#                 action Hide("mainbattle"), Jump("attackmove")
-#             button:
-#                 focus_mask True
-#                 text "Items" xalign 0.5 yalign 0.5 style ("button_font")
-#                 xysize(242,43)
-#                 style "move_button"
-#                 action Hide("mainbattle"), Jump("attackmove")
-#             button:
-#                 focus_mask True
-#                 text "Heal" xalign 0.5 yalign 0.5 style ("button_font")
-#                 xysize(242,43)
-#                 style "move_button"
-#                 action Hide("mainbattle"), Jump("attackmove")
-#             button:
-#                 focus_mask True
-#                 text "Run" xalign 0.5 yalign 0.5 style ("button_font")
-#                 xysize(242,43)
-#                 style "move_button"
-#                 action Hide("mainbattle"), Jump("attackmove")
 #Screen untuk menu
 screen menu_frame:
     frame at alpha_dissolve:
         xalign 0.5 yalign 0.5
         xsize 1500
-        ysize 800
+        ysize 850
         background Frame("images/UI/3.png")
+
 #Screen Health
 screen healths:
     frame at alpha_dissolve:
@@ -211,6 +205,7 @@ screen healths:
         text "{i}Player{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{i}Enemy{/i}" xalign 0.87 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{color=[turndesccol]}[turndesc]{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
+
 #Attack Menu
 screen moves:
     frame at alpha_dissolve:
@@ -253,32 +248,47 @@ screen moves:
 label initmovevar:
     if moveend == "Fireball":
         $atk = "Fire"
+        $elementQuestion = "Fire"
+        $audio.moveSFX = fireballsfx
         $movename = moveend
         $movedmg = Fireball
         $atkcol = "#E25822"
+
     elif moveend == "Wind Blade":
         $atk = "Wind"
+        $elementQuestion = "Wind"
+        $audio.moveSFX = windsfx
         $movename = moveend
         $movedmg = Wind_Blade
         $atkcol = "#61ffb0"
+
     elif moveend == "Rock Throw":
         $atk = "Earth"
+        $elementQuestion = "Earth"
+        $audio.moveSFX = throwsfx
         $movename = moveend
         $movedmg = Rock_Throw
         $atkcol = "#b17837"
-    elif moveend == "Water Stream":
+
+    elif moveend == "Bubble Stream":
         $atk = "Water"
+        $elementQuestion = "Water"
+        $audio.moveSFX = bubblesfx
         $movename = moveend
         $movedmg = Water_Stream
         $atkcol = "#55bbff"
+
     else:
         $atk = "Physical"
+        $elementQuestion = "Physical"
+        $audio.moveSFX = punchsfx
         $movename = moveend
         $movedmg = Punch
         $atkcol = "#cccccc"
+    
+    $defe = enemydefe
     jump initTriv
             
-
 screen shield:
     frame at alpha_dissolve:
         xalign 0.5
@@ -297,54 +307,57 @@ screen shield:
                     text "Fire" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("shield"), SetVariable("defe", "Fire"), Jump("autodmg")
+                    action Hide("shield"), SetVariable("elementQuestion", "Fire"), SetVariable("atkcol", "#E25822"), SetVariable("defe", "Fire"), Jump("autodmg")
                 button:
                     text "Wind" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("shield"), SetVariable("defe", "Wind"), Jump("autodmg")
+                    action Hide("shield"), SetVariable("elementQuestion", "Wind"), SetVariable("atkcol", "#61ffb0"), SetVariable("defe", "Wind"), Jump("autodmg")
             hbox:
                 spacing 100
                 button:
                     text "Earth" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("shield"), SetVariable("defe", "Earth"), Jump("autodmg")
+                    action Hide("shield"), SetVariable("elementQuestion", "Earth"), SetVariable("atkcol", "#b17837"), SetVariable("defe", "Earth"), Jump("autodmg")
                 button:
                     text "Water" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("shield"), SetVariable("defe", "Water"), Jump("autodmg")
+                    action Hide("shield"), SetVariable("elementQuestion", "Water"), SetVariable("atkcol", "#55bbff"), SetVariable("defe", "Water"), Jump("autodmg")
 
+
+########################################################################################################################
+########################################################Start Here######################################################
+########################################################################################################################
 
 #Start Mechanism
 #Start battle (called only once from script.rpy)
 label battle:
     scene bg portal with fade
+    play music battlebgm fadein 2
+
     show timebandit merah:
         xalign 0.85 #78
         yalign 1.0 #15
         zoom 1.2
-    show mika:
+
+    show miko biasa:
         xalign 0.15
         yalign 1.0
-        zoom 1.2
+        zoom 1.1
+
     window hide dissolve
+
     show screen healths
     show screen hpbar
+
     call moveinit
     call randomtriv
+
     show screen moves
 
-    $renpy.random.shuffle(trivIPA) #Randomize the trivia beforehand
-
-    $renpy.pause(None,hard=True)
-    
-#Ability Menu (Attack, Items, etc.)
-# label battlestart:
-#     window hide
-#     show screen mainbattle
-#     $renpy.pause(None,hard=True)    
+    $renpy.pause(None,hard=True)   
 
 #Attack Menu
 label attackmove:
@@ -358,29 +371,15 @@ label defensemove:
     show screen shield
     $renpy.pause(None,hard=True)
 
-#Trivia initiations
-# label trivia:
-#     $ quizquestion = trivIPA[z]
-#     $ asks = quizquestion["question"]
-#     $ answers = quizquestion["answer"]
-#     $ corrects = quizquestion["correct"]
-#     $ renpy.random.shuffle(answers) #reshuffle answers
-#     $ answers1 = answers[0]
-#     $ answers2 = answers[1]
-#     $ answers3 = answers[2]
-#     $ answers4 = answers[3]
-#     $ answercheck = ""
-#     jump trivia1
-
 #Trivia gui
 label trivia1:
-    $ time = 150
-    $ timer_range = 150
+    $ time = 200
+    $ timer_range = 200
     $ timer_jump = 'checkquiz1'
     show screen menu_frame
     show screen countdown
     menu:
-        "{color=[atkcol]}{b}[atk] Trivia{/b}{/color}\n
+        "{color=[atkcol]}{b}[elementQuestion] Trivia{/b}{/color}\n
         {color=#FFFFFF}[asks]{/color}" if dummy == True:
             "Oops. How'd you get here?"
         "[answers1]":
@@ -404,9 +403,13 @@ label checkquiz1:
         $Hide("menu_frame", transition=Dissolve(1.0))()
         
         window show dissolve
+
         $movedmg *= 1
         $movedmg = int(movedmg)
         $canAttack = True
+
+        show miko happy animated
+
         if turn == True:
             "Trivia benar! Serangan berhasil menyerang musuh!"
         else:
@@ -418,8 +421,12 @@ label checkquiz1:
         $Hide("menu_frame", transition=Dissolve(1.0))()
 
         window show dissolve
+
         $defe = "None"
         $canAttack = False
+
+        show miko sad animated
+
         if turn == True:
             "Waktu habis! Serangan gagal menyerang musuh!"
         else:
@@ -429,8 +436,12 @@ label checkquiz1:
         $Hide("menu_frame", transition=Dissolve(1.0))()
        
         window show dissolve
+
         $defe = "None"
         $canAttack = False
+
+        show miko sad animated
+
         if turn == True:
             "Trivia salah! Serangan gagal menyerang musuh!"
         else:
@@ -443,25 +454,31 @@ label checkquiz1:
 
 label checkeffective1: #calculates effectiveness of an attack
     call critrate #look if the attack crits or not
+
     if turn == False:
         if defe == "None":
             $multiplier = supereffective
             $movedmg *= multiplier
             $effectivedesc = "very effective"
+
             if crit == True:
                 $truecrit = critdmg1 / 100
                 $movedmg *= critdmg[1] * truecrit
                 $movedmg = int(movedmg)
+
             jump attack
+
     if atk == "Water":
         if defe == "Fire":
             $multiplier = supereffective
             $movedmg *= multiplier
             $effectivedesc = "very effective"
+
         elif defe == "Earth":
             $multiplier = weak
             $movedmg *= multiplier
             $effectivedesc = "not very effective"
+
         else:
             $multiplier = effective
             $movedmg *= multiplier
@@ -472,10 +489,12 @@ label checkeffective1: #calculates effectiveness of an attack
             $multiplier = supereffective
             $movedmg *= multiplier
             $effectivedesc = "very effective"
+
         elif defe == "Water":
             $multiplier = weak
             $movedmg *= multiplier
             $effectivedesc = "not very effective"
+
         else:
             $multiplier = effective
             $movedmg *= multiplier
@@ -486,24 +505,29 @@ label checkeffective1: #calculates effectiveness of an attack
             $multiplier = supereffective
             $movedmg *= multiplier
             $effectivedesc = "very effective"
+
         elif defe == "Fire":
             $multiplier = weak
             $movedmg *= multiplier
             $effectivedesc = "not very effective"
+
         else:
             $multiplier = effective
             $movedmg *= multiplier
             $effectivedesc = "effective"
+
         
     elif atk == "Earth":
         if defe == "Water":
             $multiplier = supereffective
             $movedmg *= multiplier
             $effectivedesc = "very effective"
+
         elif defe == "Wind":
             $multiplier = weak
             $movedmg *= multiplier
             $effectivedesc = "not very effective"
+
         else:
             $multiplier = effective
             $movedmg *= multiplier
@@ -514,8 +538,6 @@ label checkeffective1: #calculates effectiveness of an attack
         $multiplier = effective
         $movedmg *= multiplier
         $effectivedesc = "effective"
-
-    
 
     #Crit DMG Calculations
     if crit == True:
@@ -531,7 +553,6 @@ label critrate: #calculates crit
 
     if crt == 5:
         $crit = True
-
     else:
         $crit = False
 
@@ -542,29 +563,45 @@ label attack: #damaging part
     if turn == True: #player turn
         if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
             "Kamu menggunakan [movename]."
+
             $dmgto = playeratk + movedmg - enemydef
             $dmgto = int(dmgto)
             $enemycurhp -= dmgto
+            $renpy.restart_interaction()
+
+            play sound moveSFX
+            show miko attack
+            $renpy.pause(2.0,hard=True)
+            show miko biasa
+
             if enemycurhp <= 0:
                 $enemycurhp = 0
+
     else: #enemy turn
         if defe != "None":
             "Kamu menggunakan perisai [defe]."
         "Musuh menggunakan serangan [atk]."
 
-        if effectivedesc == "not very effective":
-            "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan!"
-        elif effectivedesc == "very effective":
-            "Tangkis gagal menahan elemen! Serangan musuh lebih efektif!"
         $dmgto = enemyatk + movedmg - playerdef
         $dmgto = int(dmgto)
         $playercurhp -= dmgto
+
+        play sound punchsfx
+        show miko hit animated
+        $renpy.restart_interaction()
+        $renpy.pause(2.0,hard=True)
+        show miko biasa
+
+        if effectivedesc == "not very effective":
+            "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan!"
+
+        elif effectivedesc == "very effective":
+            "Tangkis gagal menahan elemen! Serangan musuh lebih efektif!"
+
+        
+        
         if playercurhp <= 0:
             $playercurhp = 0
-
-    #Dialogue on enemy's turn
-    # if turn == False:
-    #     "Enemy memberikan serangan sebesar [dmgto]."
 
     #Dialogue on player's turn
     if turn == True:
@@ -572,12 +609,14 @@ label attack: #damaging part
             if dmgto > 0:
                 if effectivedesc == "not very effective":
                     "Serangan kurang efektif!"
+
                 elif effectivedesc == "very effective":
                     "Serangan sangat efektif!"
     
     #Dialogue if crits
     if crit == True:
         "Serangan kritis!"
+
     $movedmg = 0 #reset the move dmg
     $canAttack = False #reset
 
@@ -588,24 +627,34 @@ label attack: #damaging part
     if playercurhp <= 0:
         "Kamu kalah! Musuh telah memenangkan partarungan."
         $curexp -= 10
+
         if curexp <= 0:
             $curexp = 0
         "EXP kamu berkurang 10 karena telah kalah melawan musuh."
+
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
+
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
+
+        stop music fadeout 2
         scene black with fade
         return
-        
+
     elif enemycurhp <= 0:
         "Kamu menang! Musuh berhasil dikalahkan."
         "Kamu mendapatkan 15 EXP."
+
         call xpgain
+
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
+
         $playercurhp = playermaxhp
         $enemycurhp = enemymaxhp
+
+        stop music fadeout 2
         scene black with fade
         return
 
@@ -614,6 +663,7 @@ label attack: #damaging part
         call switch
         if turn == False:
             jump defensemove
+
         else:
             jump attackmove
 
@@ -627,10 +677,12 @@ label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max r
 
 label switch: #switch turn
     $renpy.pause(2.0,hard=True) #for damage animation interval
+
     if turn == True:
         $turn = False
         $turndesc = "ENEMY TURN"
         $turndesccol = "#a13e3e"
+
     else:
         $turn = True
         $turndesc = "YOUR TURN"
@@ -641,18 +693,22 @@ label switch: #switch turn
 label xpgain:
     $curexp += 15 / lvl
     $curexp = int(curexp)
+
     if curexp >= maxexp:
         $curexp = maxexp
         $lvl += 1
         $curexp = 0
         call apgain
+
     $renpy.restart_interaction()
     $renpy.pause(2.0,hard=True)
     return
 
 label apgain:
     $curap += bonusap
+
     if lvl % 5 == 0:
         $bonusap +=1
+
     call upstart
     return
