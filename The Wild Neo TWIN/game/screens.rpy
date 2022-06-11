@@ -557,7 +557,12 @@ screen about():
 
             label "[config.name!t]"
             text _("Version [config.version!t]\n")
-
+            
+            text _("{b}Special thanks to:{/b}\n\n")
+            
+            text _("{b}Beckground music:{/b}\n")
+            text _("{a=https://opengameart.org/users/cleytonkauffman}CleytonKauffman{/a}\n")
+            
             ## gui.about is usually set in options.rpy.
             if gui.about:
                 text "[gui.about!t]\n"
