@@ -49,7 +49,7 @@ screen upgrade:
         xsize 1820
         ysize 980
         background Frame("images/UI/3.png")
-        add "images/Character/Mika/mika biasa.png" xalign 0.1 yalign 0.5
+        add "images/Character/Miko/miko biasa.png" xalign 0.1 yalign 0.5
 
         
         
