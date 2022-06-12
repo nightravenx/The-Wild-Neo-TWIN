@@ -31,43 +31,43 @@ define whiteflash = Fade(0.1, 0.0, 0.5, color="#fff")
 define redflash = Fade(0.1, 0.0, 0.5, color="#f00")
 
 # image miko
-image miko biasa = "character/MIKO/biasa.png"
-image miko senang = "character/MIKO/senang.png"
-image miko marah = "character/MIKO/marah.png"
-image miko sedih = "character/MIKO/sedih.png"
+image miko biasa = "Character/MIKO/biasa.png"
+image miko senang = "Character/MIKO/senang.png"
+image miko marah = "Character/MIKO/marah.png"
+image miko sedih = "Character/MIKO/sedih.png"
 
-image diam miko biasa = "character/MIKO/diam/biasa.png"
-image diam miko senang = "character/MIKO/diam/senang.png"
-image diam miko marah = "character/MIKO/diam/marah.png"
-image diam miko sedih = "character/MIKO/diam/sedih.png"
+image diam miko biasa = "Character/MIKO/diam/biasa.png"
+image diam miko senang = "Character/MIKO/diam/senang.png"
+image diam miko marah = "Character/MIKO/diam/marah.png"
+image diam miko sedih = "Character/MIKO/diam/sedih.png"
 
 # image mika
-image mika biasa = "character/MIKA/biasa.png"
-image mika senang = "character/MIKA/senang.png"
-image mika marah = "character/MIKA/marah.png"
-image mika sedih = "character/MIKA/sedih.png"
+image mika biasa = "Character/MIKA/biasa.png"
+image mika senang = "Character/MIKA/senang.png"
+image mika marah = "Character/MIKA/marah.png"
+image mika sedih = "Character/MIKA/sedih.png"
 
-image diam mika biasa = "character/MIKA/diam/biasa.png"
-image diam mika senang = "character/MIKA/diam/senang.png"
-image diam mika marah = "character/MIKA/diam/marah.png"
-image diam mika sedih = "character/MIKA/diam/sedih.png"
+image diam mika biasa = "Character/MIKA/diam/biasa.png"
+image diam mika senang = "Character/MIKA/diam/senang.png"
+image diam mika marah = "Character/MIKA/diam/marah.png"
+image diam mika sedih = "Character/MIKA/diam/sedih.png"
 
-image mika biasa flip= im.Flip("character/MIKA/biasa.png", horizontal=True)
-image mika senang flip= im.Flip("character/MIKA/senang.png", horizontal=True)
-image mika marah flip= im.Flip("character/MIKA/marah.png", horizontal=True)
-image mika sedih flip= im.Flip("character/MIKA/sedih.png", horizontal=True)
+image mika biasa flip= im.Flip("Character/MIKA/biasa.png", horizontal=True)
+image mika senang flip= im.Flip("Character/MIKA/senang.png", horizontal=True)
+image mika marah flip= im.Flip("Character/MIKA/marah.png", horizontal=True)
+image mika sedih flip= im.Flip("Character/MIKA/sedih.png", horizontal=True)
 
-image diam mika biasa flip= im.Flip("character/MIKA/diam/biasa.png", horizontal=True)
-image diam mika senang flip= im.Flip("character/MIKA/diam/senang.png", horizontal=True)
-image diam mika marah flip= im.Flip("character/MIKA/diam/marah.png", horizontal=True)
-image diam mika sedih flip= im.Flip("character/MIKA/diam/sedih.png", horizontal=True)
+image diam mika biasa flip= im.Flip("Character/MIKA/diam/biasa.png", horizontal=True)
+image diam mika senang flip= im.Flip("Character/MIKA/diam/senang.png", horizontal=True)
+image diam mika marah flip= im.Flip("Character/MIKA/diam/marah.png", horizontal=True)
+image diam mika sedih flip= im.Flip("Character/MIKA/diam/sedih.png", horizontal=True)
 
 style game_tb:
     background Frame("images/button_idle.png")
     hover_background Frame("images/button_hover.png")
 
 default user = "MIKO"
-default sibling = "MIKA"
+default sib = "MIKA"
 
 label start:
 
