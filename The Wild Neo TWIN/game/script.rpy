@@ -66,8 +66,8 @@ style game_tb:
     background Frame("images/button_idle.png")
     hover_background Frame("images/button_hover.png")
 
-default user = "MIKO"
-default sib = "MIKA"
+default user = "Miko"
+default sib = "Mika"
 
 label start:
 
