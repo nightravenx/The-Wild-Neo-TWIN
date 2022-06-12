@@ -12,24 +12,41 @@ define audio.battlebgm = "audio/battle/battle.mp3"
 
 define audio.moveSFX = ""
 
+
 #Animation
-image miko hit animated:
-    "miko hurt"
+image user hit animated:
+    "user hurt"
     pause 0.1
-    "miko defense"
+    "user defense"
     pause 0.1
     repeat 3
 
-image miko happy animated:
-    "miko senang"
+image user happy animated:
+    "user senang"
     pause 1.5
-    "miko biasa"
+    "user biasa"
 
-image miko sad animated:
-    "miko sedih"
+image user sad animated:
+    "user sedih"
     pause 1.5
-    "miko biasa"
-    
+    "user biasa"
+
+
+image user hurt = "Character/[user!u]/hurt.png"
+image user attack = "Character/[user!u]/attack.png"
+image user biasa = "Character/[user!u]/biasa.png"
+image user defense = "Character/[user!u]/defense.png"
+image user senang = "Character/[user!u]/senang.png"
+image user sedih = "Character/[user!u]/sedih.png"
+image user diam biasa = "Character/[user!u]/diam/biasa.png"
+
+image sib hurt = "Character/[sib!u]/hurt.png"
+image sib attack = "Character/[sib!u]/attack.png"
+image sib biasa = "Character/[sib!u]/biasa.png"
+image sib defense = "Character/[sib!u]/defense.png"
+image sib senang = "Character/[sib!u]/senang.png"
+image sib sedih = "Character/[sib!u]/sedih.png"
+image sib diam biasa = "Character/[sib!u]/diam/biasa.png"
 
 #Style
 style move_button:
@@ -39,7 +56,7 @@ style button_font:
     font "fonts/rexlia rg.otf"
     size 35
     color "#eeeeee"
-    hover_color "#9fbbf0"
+    hover_color "#6efc98"
     italic True
 style black_font:
     color "#000000"
@@ -54,6 +71,13 @@ transform alpha_dissolve:
     linear 0.5 alpha 1.0
     on hide:
         linear 0.5 alpha 0
+    
+transform charKanan:
+    xalign 0.25
+    yalign 1.0
+transform charKiri:
+    xalign 0.1
+    yalign 1.0
 
 #Stats
 #Experience
@@ -73,10 +97,10 @@ define critdmg1 = 100
 define truecrit = 1
 
 #Enemy Stats
-define enemymaxhp = 250
+define enemymaxhp = 200
 define enemycurhp = 200
 define enemyatk = 100
-define enemydef = 70
+define enemydef = 100
 
 #Move dmg temp
 define Fireball = 50 #IPA
@@ -108,7 +132,7 @@ define movename = ""
 
 #Other
 define effectivedesc = ""
-define turndesc = "YOUR TURN"
+define turndesc = "YOUR"
 define turndesccol = "#81ee57" #"#81ee57" "#a13e3e" "#E25822"
 define atkcol = ""
 
@@ -124,7 +148,8 @@ define y = 30
 define a = 0
 
 #Turn Switch
-define turn = True
+define turn = 1
+define sibTurn = ""
 
 #Final dmg
 define dmgto = 0
@@ -204,7 +229,7 @@ screen healths:
         background Frame("images/UI/3.png")
         text "{i}Player{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{i}Enemy{/i}" xalign 0.87 yalign 0.22 font "fonts/rexlia rg.otf"
-        text "{color=[turndesccol]}[turndesc]{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
+        text "{color=[turndesccol]}[turndesc!u] TURN{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
 
 #Attack Menu
 screen moves:
@@ -334,18 +359,14 @@ screen shield:
 #Start Mechanism
 #Start battle (called only once from script.rpy)
 label battle:
+    scene black with fade
+    play music battlebgm fadein 3
+    $renpy.pause(1.0,hard=True)
     scene bg portal with fade
-    play music battlebgm fadein 2
+    
+    $renpy.pause(1.0,hard=True)
 
-    show timebandit merah:
-        xalign 0.85 #78
-        yalign 1.0 #15
-        zoom 1.2
-
-    show miko biasa:
-        xalign 0.15
-        yalign 1.0
-        zoom 1.1
+    
 
     window hide dissolve
 
@@ -356,7 +377,23 @@ label battle:
     call randomtriv
 
     show screen moves
+    $renpy.pause(1.0,hard=True)
+    show timebandit merah with moveinright:
+        xalign 0.85 #78
+        yalign 1.0 #15
+        zoom 1.2
 
+    show user biasa at charKanan:
+        zoom 1.1
+
+    show sib biasa at charKiri behind user:
+        zoom 1.1
+    
+    with moveinleft
+
+    $renpy.pause(0.5,hard=True)  
+    show sib diam biasa with dissolve
+    
     $renpy.pause(None,hard=True)   
 
 #Attack Menu
@@ -408,7 +445,7 @@ label checkquiz1:
         $movedmg = int(movedmg)
         $canAttack = True
 
-        show miko happy animated
+        show user happy animated
 
         if turn == True:
             "Trivia benar! Serangan berhasil menyerang musuh!"
@@ -425,7 +462,7 @@ label checkquiz1:
         $defe = "None"
         $canAttack = False
 
-        show miko sad animated
+        show user sad animated
 
         if turn == True:
             "Waktu habis! Serangan gagal menyerang musuh!"
@@ -440,7 +477,7 @@ label checkquiz1:
         $defe = "None"
         $canAttack = False
 
-        show miko sad animated
+        show user sad animated
 
         if turn == True:
             "Trivia salah! Serangan gagal menyerang musuh!"
@@ -560,24 +597,50 @@ label critrate: #calculates crit
 
 label attack: #damaging part
     window show dissolve
-    if turn == True: #player turn
-        if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
+    if turn == 1: #player turn
+        if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not
             "Kamu menggunakan [movename]."
-
             $dmgto = playeratk + movedmg - enemydef
             $dmgto = int(dmgto)
             $enemycurhp -= dmgto
             $renpy.restart_interaction()
 
             play sound moveSFX
-            show miko attack
+            show user attack 
             $renpy.pause(2.0,hard=True)
-            show miko biasa
+            show user biasa
 
+            if dmgto > 0:
+                if effectivedesc == "not very effective":
+                    "Serangan kurang efektif!"
+
+                elif effectivedesc == "very effective":
+                    "Serangan sangat efektif!"
+
+            if crit == True :
+                "Serangan kritis!"
             if enemycurhp <= 0:
                 $enemycurhp = 0
+    
+    elif turn == 2: #sibling turn
+        "[sib] membantu [user] melawan musuh."
 
-    else: #enemy turn
+        $dmgto = playeratk + movedmg - enemydef
+        $dmgto = int(dmgto)
+        $enemycurhp -= dmgto
+        $renpy.restart_interaction()
+
+        play sound punchsfx
+        show sib attack
+        $renpy.pause(2.0,hard=True)
+        show sib biasa
+
+        if crit == True :
+            "Serangan kritis!"
+        if enemycurhp <= 0:
+            $enemycurhp = 0
+
+    elif turn == 3: #enemy turn
         if defe != "None":
             "Kamu menggunakan perisai [defe]."
         "Musuh menggunakan serangan [atk]."
@@ -587,10 +650,10 @@ label attack: #damaging part
         $playercurhp -= dmgto
 
         play sound punchsfx
-        show miko hit animated
+        show user hit animated
         $renpy.restart_interaction()
         $renpy.pause(2.0,hard=True)
-        show miko biasa
+        show user biasa
 
         if effectivedesc == "not very effective":
             "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan!"
@@ -598,24 +661,14 @@ label attack: #damaging part
         elif effectivedesc == "very effective":
             "Tangkis gagal menahan elemen! Serangan musuh lebih efektif!"
 
-        
+        if crit == True :
+            "Serangan kritis!"
         
         if playercurhp <= 0:
             $playercurhp = 0
 
-    #Dialogue on player's turn
-    if turn == True:
-        if canAttack == True: #decide if the player can attack or not (set from whether the trivia is correct or not)
-            if dmgto > 0:
-                if effectivedesc == "not very effective":
-                    "Serangan kurang efektif!"
-
-                elif effectivedesc == "very effective":
-                    "Serangan sangat efektif!"
     
-    #Dialogue if crits
-    if crit == True:
-        "Serangan kritis!"
+    
 
     $movedmg = 0 #reset the move dmg
     $canAttack = False #reset
@@ -661,11 +714,35 @@ label attack: #damaging part
     #If neither sides died yet
     else:
         call switch
-        if turn == False:
-            jump defensemove
+        if turn == 1:
+            jump attackmove
+
+        elif turn == 2:
+            show user biasa at charKiri behind sib
+            show sib diam biasa at charKanan
+            with move
+
+            show user diam biasa
+            show sib biasa
+            with dissolve
+
+            jump sibAttack
 
         else:
-            jump attackmove
+            show sib biasa at charKiri behind user
+            show user diam biasa at charKanan
+            with move
+
+            show sib diam biasa 
+            show user biasa
+            with dissolve 
+
+            jump defensemove
+        # if turn == False:
+        #     jump defensemove
+
+        # else:
+        #     jump attackmove
 
 
 
@@ -675,19 +752,45 @@ label autodmg: #for enemy atk dmg (dmg randomized according to x min and y max r
     $atk = atklist[a]
     jump initTrivDef
 
+label sibAttack:
+    $movedmg = renpy.random.randint(30, 50)
+    $atk = "Physical"
+    jump checkeffective1
+
 label switch: #switch turn
     $renpy.pause(2.0,hard=True) #for damage animation interval
 
-    if turn == True:
-        $turn = False
-        $turndesc = "ENEMY TURN"
-        $turndesccol = "#a13e3e"
+    if turn == 1:
+        $turn = 2
+        $turndesc = sib
+        $turndesccol = "#261ac2"
 
+    elif turn == 2:
+        $turn = 3
+        $turndesc = "ENEMY"
+        $turndesccol = "#a13e3e"
+        
+    
     else:
-        $turn = True
-        $turndesc = "YOUR TURN"
+        $turn = 1
+        $turndesc = "YOUR"
         $turndesccol = "#81ee57"
         $defe = enemydefe
+
+    
+    return
+
+
+    # if turn == True:
+    #     $turn = False
+    #     $turndesc = "ENEMY TURN"
+    #     $turndesccol = "#a13e3e"
+
+    # else:
+    #     $turn = True
+    #     $turndesc = "YOUR TURN"
+    #     $turndesccol = "#81ee57"
+    #     $defe = enemydefe
     return
 
 label xpgain:
