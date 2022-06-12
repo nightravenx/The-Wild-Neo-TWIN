@@ -201,149 +201,174 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 9
-# Kalo bisa minta tolong @putu dan @angga
+    call screen karakter
+    screen karakter:
+        frame:
+            xalign 0.5 yalign 0.2
+            xsize 1400 ysize 1050
+            background Frame("images/UI/1.png")
+            vbox:
+                xalign 0.5 ypos 150
+                spacing 100
+                text "PILIHLAH KARAKTER" size 48 minwidth 100 xalign 0.5 yalign 1.0
+                hbox:
+                    spacing 200
+                    vbox:
+                        imagebutton:
+                            auto "images/Character/MIKO/miko_%s.png"
+                            xalign 0.3 ypos 70
+                            action [Hide("karakter"), Jump("next")]
+                        text "MIKO" size 36 xalign 0.3 ypos 100
+                    vbox:
+                        imagebutton:
+                            auto "images/Character/MIKA/mika_%s.png"
+                            xalign 0.3 ypos 70
+                            action [Hide("karakter"), Jump("next")]
+                        text "MIKA" size 36 xalign 0.5 ypos 100
+
 # shot no 10
-    scene bg lab
+    label next:
+        scene bg lab
 
-    show diam mika biasa at right:
-        xalign 0.95
-    show miko biasa at left:
-        xalign 0.05
-    miko "Hey Mika, aku punya ide! Bagaimana jika kita membuat mesin waktu untuk menarik hewan dari masa lalu ke masa sekarang?"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika biasa
-    hide miko biasa
+        show diam mika biasa at right:
+            xalign 0.95
+        show miko biasa at left:
+            xalign 0.05
+        miko "Hey Mika, aku punya ide! Bagaimana jika kita membuat mesin waktu untuk menarik hewan dari masa lalu ke masa sekarang?"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika biasa
+        hide miko biasa
 
-    show mika senang flip at right:
-        xalign 0.95
-    show diam miko biasa at left:
-        xalign 0.05
-    mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Mika."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko biasa
-    hide mika senang flip
+        show mika senang flip at right:
+            xalign 0.95
+        show diam miko biasa at left:
+            xalign 0.05
+        mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Mika."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko biasa
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko biasa at left:
-        xalign 0.05
-    miko "Iya benar, kita tidak bisa kembali ke masa lalu. Tetapi kita bisa menarik yang ada di masa lalu ke masa sekarang bukan?"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko biasa
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko biasa at left:
+            xalign 0.05
+        miko "Iya benar, kita tidak bisa kembali ke masa lalu. Tetapi kita bisa menarik yang ada di masa lalu ke masa sekarang bukan?"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko biasa
 
-    show diam miko biasa at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Ah! Jika kita mengunci sesuatu di sebuah ruang dan memanipulasi waktu secara temporal..."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko biasa
-    hide mika senang flip
+        show diam miko biasa at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Ah! Jika kita mengunci sesuatu di sebuah ruang dan memanipulasi waktu secara temporal..."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko biasa
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko biasa at left:
-        xalign 0.05
-    miko "Mik..."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko biasa
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko biasa at left:
+            xalign 0.05
+        miko "Mik..."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko biasa
 
-    show diam miko biasa at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Lalu membatasi progresi metabolisme biologis objek pada ruang tersebut..."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko biasa
-    hide mika senang flip
+        show diam miko biasa at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Lalu membatasi progresi metabolisme biologis objek pada ruang tersebut..."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko biasa
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko biasa at left:
-        xalign 0.05
-    miko "Mika..."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko biasa
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko biasa at left:
+            xalign 0.05
+        miko "Mika..."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko biasa
 
-    show diam miko biasa at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Digabungkan dengan data lokasi dan waktu setiap hewan yang cukup dari database..."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko biasa
-    hide mika senang flip
+        show diam miko biasa at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Digabungkan dengan data lokasi dan waktu setiap hewan yang cukup dari database..."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko biasa
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko marah at left:
-        xalign 0.05
-    miko "Mika!"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko marah
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko marah at left:
+            xalign 0.05
+        miko "Mika!"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko marah
 
-    show diam miko marah at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Ah! Maaf aku terlalu bersemangat dengan ide dan teori yang tiba-tiba muncul, jadi tidak sadar lingkungan, hehe."
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko marah
-    hide mika senang flip
+        show diam miko marah at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Ah! Maaf aku terlalu bersemangat dengan ide dan teori yang tiba-tiba muncul, jadi tidak sadar lingkungan, hehe."
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko marah
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko biasa at left:
-        xalign 0.05
-    miko "Dasar kebiasaan kamu. Tapi berarti ide ini bisa dilakukan kan?"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko biasa
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko biasa at left:
+            xalign 0.05
+        miko "Dasar kebiasaan kamu. Tapi berarti ide ini bisa dilakukan kan?"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko biasa
 
-    show diam miko biasa at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Berdasarkan pemikiranku dan teknologi yang sekarang, seharusnya bisa!"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko biasa
-    hide mika senang flip
+        show diam miko biasa at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Berdasarkan pemikiranku dan teknologi yang sekarang, seharusnya bisa!"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko biasa
+        hide mika senang flip
 
-    show diam mika senang flip at right:
-        xalign 0.95
-    show miko senang at left:
-        xalign 0.05
-    miko "Ayo buat mesin waktu?"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam mika senang flip
-    hide miko senang
+        show diam mika senang flip at right:
+            xalign 0.95
+        show miko senang at left:
+            xalign 0.05
+        miko "Ayo buat mesin waktu?"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam mika senang flip
+        hide miko senang
 
-    show diam miko senang at left:
-        xalign 0.05
-    show mika senang flip at right:
-        xalign 0.95
-    mika "Ayo! Dan kita kembalikan keanekaragaman hewan!"
-    with Dissolve(0.5)
-    $ renpy.pause(0.5, hard=True)
-    hide diam miko senang
-    hide mika senang flip
+        show diam miko senang at left:
+            xalign 0.05
+        show mika senang flip at right:
+            xalign 0.95
+        mika "Ayo! Dan kita kembalikan keanekaragaman hewan!"
+        with Dissolve(0.5)
+        $ renpy.pause(0.5, hard=True)
+        hide diam miko senang
+        hide mika senang flip
 
 # shot no 11
     "(Miko dan Mika mulai membentuk portal waktu di lab mereka){w=3}{nw}"
