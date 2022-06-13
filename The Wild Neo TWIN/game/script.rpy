@@ -66,13 +66,13 @@ style game_tb:
     background Frame("images/button_idle.png")
     hover_background Frame("images/button_hover.png")
 
-default user = "MIKO"
-default sib = "MIKA"
+default user = "Miko"
+default sib = "Mika"
 
 label start:
 
 #################################################################################
-# Prolog
+# SEQUENCE 01 - PROLOG
 #################################################################################
 # shot no 1
     intro "Bumi\nTahun 7047{w=3}{nw}"
@@ -572,7 +572,7 @@ label start:
     show miko diam biasa at left:
         xalign 0.05
     show mika diam biasa at left behind miko, diam, biasa:
-        xalign 0.3
+        xalign 0.2
     show tb merah at right:
         xalign 0.9
     tb "Ahahahaha!"
@@ -588,7 +588,7 @@ label start:
     hide tb merah
 
     show mika diam biasa at left behind miko, marah:
-        xalign 0.3
+        xalign 0.2
     show diam tb merah at right:
         xalign 0.9
     show miko marah at left:
@@ -603,7 +603,7 @@ label start:
     show miko diam marah at left:
         xalign 0.05
     show mika diam biasa at left behind miko, diam, marah:
-        xalign 0.3
+        xalign 0.2
     show tb merah at right:
         xalign 0.9
     tb "Ah, ada orang disini ternyata. Halo penduduk bumi tahun 7047!"
@@ -618,7 +618,7 @@ label start:
     show diam tb merah at right:
         xalign 0.95
     show mika marah at left:
-        xalign 0.3
+        xalign 0.2
     mika "Ya! Siapa kamu dan kenapa ada disini?!"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
@@ -627,7 +627,7 @@ label start:
     hide mika marah
 
     show mika diam marah at left:
-        xalign 0.3
+        xalign 0.2
     show miko diam marah at left:
         xalign 0.05
     show tb merah at right:
@@ -640,7 +640,7 @@ label start:
     hide tb merah
 
     show mika diam marah at left:
-        xalign 0.3
+        xalign 0.2
     show diam tb merah at right:
         xalign 0.9
     show miko biasa at left:
@@ -653,7 +653,7 @@ label start:
     hide miko biasa
 
     show mika diam marah at left:
-        xalign 0.3
+        xalign 0.2
     show miko diam biasa at left:
         xalign 0.05
     show tb merah at right:
@@ -670,7 +670,7 @@ label start:
     show diam tb merah at right:
         xalign 0.9
     show mika biasa at left:
-        xalign 0.3
+        xalign 0.2
     mika "Tapi, kamu kan sendirian..."
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
@@ -679,7 +679,7 @@ label start:
     hide mika biasa
 
     show mika diam biasa at left:
-        xalign 0.3
+        xalign 0.2
     show miko diam biasa at left:
         xalign 0.05
     show tb merah at right:
@@ -760,7 +760,7 @@ label start:
     scene bg portal
 
     show mika diam biasa at left behind miko, marah:
-        xalign 0.3
+        xalign 0.2
     show diam tb merah at right:
         xalign 0.9
     show miko marah at right:
@@ -773,14 +773,122 @@ label start:
     hide diam tb merah
     hide miko marah
 
+    # jump surabaya
     call battle #pindah ke battle screen
+#################################################################################
+# SEQUENCE 02 - ACT JAVA: 01 SURABAYA
+#################################################################################
+label surabaya:
+# shot no 1
+    scene bg portal
 
-    hide tb merah with dissolve
-    hide mika with dissolve
-    hide miko with dissolve
-    scene bg portal with fade()
+    "Miko dan Mika berhasil mengalahkan Time Bandit hingga membuatnya terjatuh dan tidak berdaya.{w=4}{nw}"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+# shot no 2
+    scene bg portal
 
+    show mika diam biasa at left:
+        xalign 0.2
+    show miko diam biasa at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    tb "Ughhh..."
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika diam biasa
+    hide miko diam biasa
+    hide tb merah
 
-    "Tamat."
+    show mika diam biasa at left:
+        xalign 0.2
+    show miko biasa at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    miko "Dia sudah tidak berdaya! Ayo kita kembalikan dia ke masa depan!"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika diam biasa
+    hide miko biasa
+    hide tb merah
+
+    show mika biasa at left:
+        xalign 0.2
+    show miko diam biasa at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    mika "Oke!"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika biasa
+    hide miko diam biasa
+    hide tb merah
+# shot no 3
+    scene bg portal
+
+    "Miko dan Mika berhasil mengalahkan Time Bandit hingga membuatnya terjatuh dan tidak berdaya.{w=4}{nw}"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+
+    "Mika mulai menganalisa alat di tangan Time Bandit yang dicurigai sebagai mesin waktu.{w=4}{nw}"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+# shot no 4
+    scene bg portal
+
+    show mika diam biasa at left:
+        xalign 0.2
+    show miko diam biasa at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    tb "Ugh, apa yang kalian lakukan?"
+    with Dissolve(0.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika diam biasa
+    hide miko diam biasa
+    hide tb merah
+
+    show mika diam biasa at left:
+        xalign 0.2
+    show miko marah at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    miko "Mengembalikan kamu ke waktu asalmu! Tidak akan kubiarkan kamu memburu dan menangkap hewan disini!"
+    with Dissolve(0nm aaa.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika diam biasa
+    hide miko marah
+    hide tb merah
+
+    show mika diam biasa at left:
+        xalign 0.2
+    show miko diam marah at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    tb "Hah, kamu kira aku datang kesini sendirian? Bos membawa pasukan Time Bandit yang sangat banyak tahu!"
+    with Dissolve(0nm aaa.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika diam biasa
+    hide miko diam marah
+    hide tb merah
+
+    show mika biasa at left:
+        xalign 0.2
+    show miko diam marah at left:
+        xalign 0.05
+    show tb merah at right:
+        xalign 0.9
+    mika "Tapi faktanya kamu kan sendirian disini."
+    with Dissolve(0nm aaa.5)
+    $ renpy.pause(0.5, hard=True)
+    hide mika biasa
+    hide miko diam marah
+    hide tb merah
 
     return
