@@ -200,9 +200,35 @@ label start:
     "(Dengan niat mengembalikan keanekaragaman hewan di Indonesia, mereka berniat menciptakan mesin waktu){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
+    
 # shot no 9
-# Kalo bisa minta tolong @putu dan @angga
+    call screen karakter
+        screen karakter:
+            frame:
+                xalign 0.5 yalign 0.2
+                xsize 1400 ysize 1050
+                background Frame("images/UI/1.png")
+                vbox:
+                    xalign 0.5 ypos 150
+                    spacing 100
+                    text "PILIHLAH KARAKTER" size 48 minwidth 100 xalign 0.5 yalign 1.0
+                    hbox:
+                        spacing 200
+                        vbox:
+                            imagebutton:
+                                auto "images/Character/MIKO/miko_%s.png"
+                                xalign 0.3 ypos 70
+                                action [Hide("karakter"), Jump("next")]
+                            text "MIKO" size 36 xalign 0.3 ypos 100
+                        vbox:
+                            imagebutton:
+                                auto "images/Character/MIKA/mika_%s.png"
+                                xalign 0.3 ypos 70
+                                action [Hide("karakter"), Jump("next")]
+                            text "MIKA" size 36 xalign 0.5 ypos 100
+
 # shot no 10
+    label next:
     scene bg lab
 
     show mika diam biasa at right:
@@ -427,7 +453,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 14
-# ga paham VFX di renpy gimana :v
+scene bg portal1
     "(Tiba-tiba, layar mesin berubah menjadi merah dan menampilkan pesan kesalahan){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
@@ -435,7 +461,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 15
-# ga paham VFX di renpy gimana :v
+    scene bg portal2
     "*shiiiing* *BAAAM*{w=2}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
@@ -443,6 +469,7 @@ label start:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 16
+    scene bg portal
     "(Kondisi lab kembali tenang, portal waktu tidak mengeluarkan cahaya dan suara yang bising lagi){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
