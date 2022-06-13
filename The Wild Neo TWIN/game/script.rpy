@@ -62,10 +62,14 @@ image diam mika senang flip= im.Flip("Character/MIKA/diam/senang.png", horizonta
 image diam mika marah flip= im.Flip("Character/MIKA/diam/marah.png", horizontal=True)
 image diam mika sedih flip= im.Flip("Character/MIKA/diam/sedih.png", horizontal=True)
 
-style game_tb:
-    background Frame("images/button_idle.png")
-    hover_background Frame("images/button_hover.png")
-
+style mm_font:
+    font "fonts/Rounded_Elegance.ttf"
+    size 20
+    hover_color "#ff0000"
+style mm_button:
+    background Frame("images/Button/button_idle.png")
+    hover_background Frame("images/Button/button_hover.png")
+    
 default user = "Miko"
 default sib = "Mika"
 
