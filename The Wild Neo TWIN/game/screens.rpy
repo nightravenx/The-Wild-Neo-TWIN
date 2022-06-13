@@ -292,15 +292,21 @@ screen navigation():
 
     vbox:
         style_prefix "navigation"
-
-        xpos 0.2
-        yalign 0.8
-
+        if renpy.get_screen("main_menu"):
+            xpos 0.2
+            yalign 0.8
+        else:
+            xalign 0.05
+            yalign 0.8
         spacing gui.navigation_spacing
 
-        if main_menu:
+       if renpy.get_screen("main_menu"):
 
-            textbutton _("New Game") action Start()
+            button:
+                text "New Game" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(262,50)
+                style "mm_button"
+                action Start()
 
         else:
 
@@ -308,9 +314,17 @@ screen navigation():
 
             textbutton _("Save") action ShowMenu("save")
 
-        textbutton _("Load Game") action ShowMenu("load")
+        button:
+            text "Load" xalign 0.5 yalign 0.5 style ("mm_font")
+            xysize(262,50)
+            style "mm_button"
+            action ShowMenu("load")
 
-        textbutton _("Settings") action ShowMenu("preferences")
+        button:
+            text "Settings" xalign 0.5 yalign 0.5 style ("mm_font")
+            xysize(262,50)
+            style "mm_button"
+            action ShowMenu("preferences")
 
         if _in_replay:
 
@@ -320,18 +334,29 @@ screen navigation():
 
             textbutton _("Main Menu") action MainMenu()
 
-        textbutton _("Credit") action ShowMenu("about")
+        button:
+            text "Credit" xalign 0.5 yalign 0.5 style ("mm_font")
+            xysize(262,50)
+            style "mm_button"
+            action ShowMenu("about")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
 
             ## Help isn't necessary or relevant to mobile devices.
-            textbutton _("Help") action ShowMenu("help")
+            button:
+                text "Help" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(262,50)
+                style "mm_button"
+                action ShowMenu("help")
 
         if renpy.variant("pc"):
 
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
-            textbutton _("Exit") action Quit(confirm=not main_menu)
+            text "Exit" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(262,50)
+                style "mm_button"
+                action Quit(confirm=not main_menu)
 
 
 style navigation_button is gui_button
