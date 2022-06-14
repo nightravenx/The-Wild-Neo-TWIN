@@ -19,7 +19,14 @@ image user hit animated:
     pause 0.1
     "user defense"
     pause 0.1
-    repeat 3
+    repeat 5
+
+image tb common hit animated:
+    "tb c hurt"
+    pause 0.1
+    "tb c biasa"
+    pause 0.1
+    repeat 5
 
 image user happy animated:
     "user senang"
@@ -39,6 +46,8 @@ image user defense = "Character/[user!u]/defense.png"
 image user senang = "Character/[user!u]/senang.png"
 image user sedih = "Character/[user!u]/sedih.png"
 image user diam biasa = "Character/[user!u]/diam/biasa.png"
+image user diam senang = "Character/[user!u]/diam/senang.png"
+image user diam sedih = "Character/[user!u]/diam/sedih.png"
 
 image sib hurt = "Character/[sib!u]/hurt.png"
 image sib attack = "Character/[sib!u]/attack.png"
@@ -47,6 +56,10 @@ image sib defense = "Character/[sib!u]/defense.png"
 image sib senang = "Character/[sib!u]/senang.png"
 image sib sedih = "Character/[sib!u]/sedih.png"
 image sib diam biasa = "Character/[sib!u]/diam/biasa.png"
+image sib diam senang = "Character/[sib!u]/diam/senang.png"
+image sib diam sedih = "Character/[sib!u]/diam/sedih.png"
+
+image tb c hurt = "Character/tb/common/hurt.png"
 
 #Style
 style move_button:
@@ -64,6 +77,15 @@ style black_font:
 style white_font:
     color "#FFFFFF"
     font "fonts/Rounded_Elegance.ttf"
+
+style mm_font:
+    font "fonts/Rounded_Elegance.ttf"
+    size 30
+    hover_color "#ff0000"
+    color "#000000"
+style mm_button:
+    background Frame("images/UI/button/button 3_idle.png")
+    hover_background Frame("images/UI/button/button 3_hover.png")
 
 #Transforms
 transform alpha_dissolve:
@@ -84,6 +106,7 @@ transform charKiri:
 define curexp = 0
 define maxexp = 100
 define lvl = 1
+define expmulti = 1
 define bonusap = 3
 define curap = 5
 define maxap = 5
@@ -127,7 +150,7 @@ define atklist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define atk = ""
 define defelist = ["Fire", "Wind", "Earth", "Water", "Physical"]
 define defe = ""
-define enemydefe = "Water" #["Fire", "Wind", "Earth", "Water", "Physical"]
+define enemydefe = "Fire" #["Fire", "Wind", "Earth", "Water", "Physical"]
 define movename = ""
 
 #Other
@@ -135,6 +158,7 @@ define effectivedesc = ""
 define turndesc = "YOUR"
 define turndesccol = "#81ee57" #"#81ee57" "#a13e3e" "#E25822"
 define atkcol = ""
+define grinding = False
 
 #Dmg Calculations
 define damage = 1
@@ -228,6 +252,7 @@ screen healths:
         ysize 210
         background Frame("images/UI/3.png")
         text "{i}Player{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
+        text "{i}Lv [lvl]{/i}" xalign 0.35 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{i}Enemy{/i}" xalign 0.87 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{color=[turndesccol]}[turndesc!u] TURN{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
 
@@ -359,9 +384,9 @@ screen shield:
 #Start Mechanism
 #Start battle (called only once from script.rpy)
 label battle:
-    scene black with fade
+    scene black with Fade(1, 0, 1)
     play music battlebgm fadein 3
-    $renpy.pause(1.0,hard=True)
+    $renpy.pause(2.0,hard=True)
     scene bg portal with fade
     
     $renpy.pause(1.0,hard=True)
@@ -373,15 +398,16 @@ label battle:
     show screen healths
     show screen hpbar
 
-    call moveinit
-    call randomtriv
+    call moveinit from _call_moveinit
+    call randomtriv from _call_randomtriv
 
     show screen moves
     $renpy.pause(1.0,hard=True)
-    show timebandit merah with moveinright:
+
+    show tb c biasa with moveinright:
         xalign 0.85 #78
         yalign 1.0 #15
-        zoom 1.2
+        zoom 0.9
 
     show user biasa at charKanan:
         zoom 1.1
@@ -399,7 +425,7 @@ label battle:
 #Attack Menu
 label attackmove:
     window hide dissolve
-    call moveinit
+    call moveinit from _call_moveinit_1
     show screen moves
     $renpy.pause(None,hard=True)
 
@@ -490,7 +516,7 @@ label checkquiz1:
     jump checkeffective1
 
 label checkeffective1: #calculates effectiveness of an attack
-    call critrate #look if the attack crits or not
+    call critrate from _call_critrate #look if the attack crits or not
 
     if turn == False:
         if defe == "None":
@@ -607,7 +633,9 @@ label attack: #damaging part
 
             play sound moveSFX
             show user attack 
-            $renpy.pause(2.0,hard=True)
+            $renpy.pause(0.5,hard=True)
+            show tb common hit animated
+            $renpy.pause(1.5,hard=True)
             show user biasa
 
             if dmgto > 0:
@@ -632,7 +660,9 @@ label attack: #damaging part
 
         play sound punchsfx
         show sib attack
-        $renpy.pause(2.0,hard=True)
+        $renpy.pause(0.5,hard=True)
+        show tb common hit animated
+        $renpy.pause(1.5,hard=True)
         show sib biasa
 
         if crit == True :
@@ -678,6 +708,8 @@ label attack: #damaging part
 
     #Going back to script.rpy if either sides died
     if playercurhp <= 0:
+        show sib diam sedih behind user
+        show user sedih
         "Kamu kalah! Musuh telah memenangkan partarungan."
         $curexp -= 10
 
@@ -693,13 +725,22 @@ label attack: #damaging part
 
         stop music fadeout 2
         scene black with fade
-        return
+
+        if grinding == False:
+            return
+        else:
+            $grinding = False
+            window hide dissolve
+            jump mapStart
 
     elif enemycurhp <= 0:
+        show sib diam senang behind user
+        show user senang
+        
         "Kamu menang! Musuh berhasil dikalahkan."
         "Kamu mendapatkan 15 EXP."
 
-        call xpgain
+        call xpgain from _call_xpgain
 
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
@@ -709,11 +750,17 @@ label attack: #damaging part
 
         stop music fadeout 2
         scene black with fade
-        return
+
+        if grinding == False:
+            return
+        else:
+            $grinding = False
+            window hide dissolve
+            jump mapStart
 
     #If neither sides died yet
     else:
-        call switch
+        call switch from _call_switch
         if turn == 1:
             jump attackmove
 
@@ -794,14 +841,16 @@ label switch: #switch turn
     return
 
 label xpgain:
-    $curexp += 15 / lvl
+    $curexp += 15 + 3*expmulti
     $curexp = int(curexp)
 
     if curexp >= maxexp:
         $curexp = maxexp
         $lvl += 1
         $curexp = 0
-        call apgain
+        $maxexp *= 1.2
+        $maxexp = int(maxexp)
+        call apgain from _call_apgain
 
     $renpy.restart_interaction()
     $renpy.pause(2.0,hard=True)
@@ -813,5 +862,5 @@ label apgain:
     if lvl % 5 == 0:
         $bonusap +=1
 
-    call upstart
+    call upstart from _call_upstart
     return
