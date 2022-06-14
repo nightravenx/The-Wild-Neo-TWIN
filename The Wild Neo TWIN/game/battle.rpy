@@ -110,6 +110,7 @@ define expmulti = 1
 define bonusap = 3
 define curap = 5
 define maxap = 5
+define expNum = 0
 
 #Player Stats
 define playermaxhp = 200
@@ -129,7 +130,7 @@ define enemydef = 100
 define Fireball = 50 #IPA
 define Wind_Blade = 50 #Math
 define Rock_Throw = 50 #IPS
-define Water_Stream = 50 #Indo
+define Bubble_Stream = 50 #Indo
 define Punch = 50
 
 
@@ -200,13 +201,93 @@ define movename4 = ""
 define moveend = ""
 define elementQuestion = ""
 
+define moveCounter = 0
+define moveDesc0 = ""
+define moveDesc1 = ""
+define moveDesc2 = ""
+define moveDesc3 = ""
+
+define moveDmg0 = 0
+define moveDmg1 = 0
+define moveDmg2 = 0
+define moveDmg3 = 0
+
+
 label moveinit:
     $renpy.random.shuffle(tempmovelist)
     $movename = tempmovelist[0]
     $movename1 = tempmovelist[1]
     $movename2 = tempmovelist[2]
     $movename3 = tempmovelist[3]
+
     $movename4 = tempmovelist[4]
+    return
+
+label moveElement:
+    if movename == "Fireball":
+        $moveDesc0 = "Fire"
+        $moveDmg0 = Fireball
+    elif movename == "Wind Blade":
+        $moveDesc0 = "Wind"
+        $moveDmg0 = Wind_Blade
+    elif movename == "Rock Throw":
+        $moveDesc0 = "Earth"
+        $moveDmg0 = Rock_Throw
+    elif movename == "Bubble Stream":
+        $moveDesc0 = "Water"
+        $moveDmg0 = Bubble_Stream
+    elif movename == "Punch":
+        $moveDesc0 = "Physical"
+        $moveDmg0 = Punch
+
+    if movename1 == "Fireball":
+        $moveDesc1 = "Fire"
+        $moveDmg1 = Fireball
+    elif movename1 == "Wind Blade":
+        $moveDesc1 = "Wind"
+        $moveDmg1 = Wind_Blade
+    elif movename1 == "Rock Throw":
+        $moveDesc1 = "Earth"
+        $moveDmg1 = Rock_Throw
+    elif movename1 == "Bubble Stream":
+        $moveDesc1 = "Water"
+        $moveDmg1 = Bubble_Stream
+    elif movename1 == "Punch":
+        $moveDesc1 = "Physical"
+        $moveDmg1 = Punch
+    
+    if movename2 == "Fireball":
+        $moveDesc2 = "Fire"
+        $moveDmg2 = Fireball
+    elif movename2 == "Wind Blade":
+        $moveDesc2 = "Wind"
+        $moveDmg2 = Wind_Blade
+    elif movename2 == "Rock Throw":
+        $moveDesc2 = "Earth"
+        $moveDmg2 = Rock_Throw
+    elif movename2 == "Bubble Stream":
+        $moveDesc2 = "Water"
+        $moveDmg2 = Bubble_Stream
+    elif movename2 == "Punch":
+        $moveDesc2 = "Physical"
+        $moveDmg2 = Punch
+
+    if movename3 == "Fireball":
+        $moveDesc3 = "Fire"
+        $moveDmg3 = Fireball
+    elif movename3 == "Wind Blade":
+        $moveDesc3 = "Wind"
+        $moveDmg3 = Wind_Blade
+    elif movename3 == "Rock Throw":
+        $moveDesc3 = "Earth"
+        $moveDmg3 = Rock_Throw
+    elif movename3 == "Bubble Stream":
+        $moveDesc3 = "Water"
+        $moveDmg3 = Bubble_Stream
+    elif movename3 == "Punch":
+        $moveDesc3 = "Physical"
+        $moveDmg3 = Punch
+    
     return
 
 #Screens
@@ -221,20 +302,21 @@ screen countdown:
     bar value time range timer_range xalign 0.5 yalign 0.81 xmaximum 600 at alpha_dissolve:
         left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
 
+
 #HP Bars Animations
 screen hpbar:
     text "{b}HP{/b}" xalign 0.085 yalign 0.08 style ("white_font") at alpha_dissolve
     text "[playercurhp]/[playermaxhp]" xalign 0.33 yalign 0.12 style ("white_font") size 27 at alpha_dissolve
     bar value AnimatedValue(playercurhp, range=playermaxhp) at alpha_dissolve:
-        xalign 0.15 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+        xalign 0.15 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/HP_full.png") right_bar Frame("images/Bar/HP_empty.png")
 
     text "{b}EXP{/b}" xalign 0.082 yalign 0.15 style ("white_font") size 27 at alpha_dissolve
     bar value AnimatedValue(curexp, range=maxexp) at alpha_dissolve:
-        xalign 0.14 yalign 0.15 xmaximum 400 ysize 20 left_bar Frame("images/Bar/exp_full.png") right_bar Frame("images/Bar/exp_empty.png")
+        xalign 0.14 yalign 0.15 xmaximum 400 ysize 25 left_bar Frame("images/Bar/XP_full.png") right_bar Frame("images/Bar/XP_empty.png")
 
     text "{b}HP{/b}" xalign 0.9185 yalign 0.08 style ("white_font") at alpha_dissolve
     bar value AnimatedValue(enemycurhp, range=enemymaxhp) at alpha_dissolve:
-        xalign 0.85 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/health_full.png") right_bar Frame("images/Bar/health_empty.png")
+        xalign 0.85 yalign 0.08 xmaximum 500 left_bar Frame("images/Bar/HP_full.png") right_bar Frame("images/Bar/HP_empty.png")
 
 #Screen untuk menu
 screen menu_frame:
@@ -276,24 +358,55 @@ screen moves:
                     text "[movename]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("moveend", movename), Jump("initmovevar")
+                    action Hide("moves"), Hide("displayMoveText"), SetVariable("moveend", movename), Jump("initmovevar")
+
+                    hovered Show("displayMoveText", displayElement = "[moveDesc0] element", displayDmg = "[moveDmg0] DMG")
+                    unhovered Hide("displayMoveText")
+
+
                 button:
                     text "[movename1]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("moveend", movename1), Jump("initmovevar")
+                    action Hide("moves"), Hide("displayMoveText"), SetVariable("moveend", movename1), Jump("initmovevar")
+
+                    hovered Show("displayMoveText", displayElement = "[moveDesc1] element", displayDmg = "[moveDmg1] DMG")
+                    unhovered Hide("displayMoveText")
+
             hbox:
                 spacing 0
                 button:
                     text "[movename2]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("moveend", movename2), Jump("initmovevar")
+                    action Hide("moves"), Hide("displayMoveText"), SetVariable("moveend", movename2), Jump("initmovevar")
+
+                    hovered Show("displayMoveText", displayElement = "[moveDesc2] element", displayDmg = "[moveDmg2] DMG")
+                    unhovered Hide("displayMoveText")
                 button:
                     text "[movename3]" xalign 0.5 yalign 0.5 style ("button_font")
                     xysize(500,90)
                     style "move_button"
-                    action Hide("moves"), SetVariable("moveend", movename3), Jump("initmovevar")
+                    action Hide("moves"), Hide("displayMoveText"), SetVariable("moveend", movename3), Jump("initmovevar")
+
+                    hovered Show("displayMoveText", displayElement = "[moveDesc3] element", displayDmg = "[moveDmg3] DMG")
+                    unhovered Hide("displayMoveText")
+
+screen displayMoveText:
+    default displayElement = ""
+    default displayDmg = ""
+    vbox:
+        xalign 0.95
+        yalign 0.975
+        frame:
+            xsize 550
+            ysize 200
+            background Frame("images/UI/5.png")
+            vbox:
+                xalign 0.5
+                yalign 0.5
+                text displayElement color "#FFFFFF"
+                text displayDmg color "#FFFFFF"
 
 label initmovevar:
     if moveend == "Fireball":
@@ -325,7 +438,7 @@ label initmovevar:
         $elementQuestion = "Water"
         $audio.moveSFX = bubblesfx
         $movename = moveend
-        $movedmg = Water_Stream
+        $movedmg = Bubble_Stream
         $atkcol = "#55bbff"
 
     else:
@@ -398,8 +511,10 @@ label battle:
     show screen healths
     show screen hpbar
 
+    
     call moveinit from _call_moveinit
     call randomtriv from _call_randomtriv
+    call moveElement
 
     show screen moves
     $renpy.pause(1.0,hard=True)
@@ -426,6 +541,7 @@ label battle:
 label attackmove:
     window hide dissolve
     call moveinit from _call_moveinit_1
+    call moveElement
     show screen moves
     $renpy.pause(None,hard=True)
 
@@ -460,6 +576,26 @@ label trivia1:
 
 #Answer check
 label checkquiz1:
+
+    $ time = 50
+    $ timer_range = 50
+    $ timer_jump = 'checkquiz2'
+    show screen countdown
+    menu:
+        "{color=[atkcol]}{b}[elementQuestion] Trivia{/b}{/color}\n
+        {color=#FFFFFF}[asks]{/color}" if dummy == True:
+            "Oops. How'd you get here?"
+        "{color=[color0]}[answers1]" if dummy == True:
+            "Oops. How'd you get here?"
+        "{color=[color1]}[answers2]" if dummy == True:
+            "Oops. How'd you get here?"
+        "{color=[color2]}[answers3]" if dummy == True:
+            "Oops. How'd you get here?"
+        "{color=[color3]}[answers4]" if dummy == True:
+            "Oops. How'd you get here?"
+
+label checkquiz2:
+
     #If correct
     if answercheck == corrects:
         $Hide("countdown", transition=Dissolve(1.0))()
@@ -474,7 +610,7 @@ label checkquiz1:
         show user happy animated
 
         if turn == True:
-            "Trivia benar! Serangan berhasil menyerang musuh!"
+            "Trivia benar! Serangan berhasil menyerang Time Bandit!"
         else:
             "Trivia benar! Perisai berhasil digunakan!"
 
@@ -491,7 +627,7 @@ label checkquiz1:
         show user sad animated
 
         if turn == True:
-            "Waktu habis! Serangan gagal menyerang musuh!"
+            "Waktu habis! Serangan gagal menyerang Time Bandit!"
         else:
             "Waktu habis! Perisai gagal digunakan!"
     else:
@@ -506,7 +642,7 @@ label checkquiz1:
         show user sad animated
 
         if turn == True:
-            "Trivia salah! Serangan gagal menyerang musuh!"
+            "Trivia salah! Serangan gagal menyerang Time Bandit!"
         else:
             "Trivia salah! Perisai gagal digunakan!"
 
@@ -651,7 +787,7 @@ label attack: #damaging part
                 $enemycurhp = 0
     
     elif turn == 2: #sibling turn
-        "[sib] membantu [user] melawan musuh."
+        "[sib] membantu [user] melawan Time Bandit."
 
         $dmgto = playeratk + movedmg - enemydef
         $dmgto = int(dmgto)
@@ -673,7 +809,7 @@ label attack: #damaging part
     elif turn == 3: #enemy turn
         if defe != "None":
             "Kamu menggunakan perisai [defe]."
-        "Musuh menggunakan serangan [atk]."
+        "Time Bandit menggunakan serangan [atk]."
 
         $dmgto = enemyatk + movedmg - playerdef
         $dmgto = int(dmgto)
@@ -686,10 +822,10 @@ label attack: #damaging part
         show user biasa
 
         if effectivedesc == "not very effective":
-            "Tangkis berhasil menahan elemen! Serangan musuh dilemahkan!"
+            "Tangkis berhasil menahan elemen! Serangan Time Bandit dilemahkan!"
 
         elif effectivedesc == "very effective":
-            "Tangkis gagal menahan elemen! Serangan musuh lebih efektif!"
+            "Tangkis gagal menahan elemen! Serangan Time Bandit lebih efektif!"
 
         if crit == True :
             "Serangan kritis!"
@@ -708,14 +844,14 @@ label attack: #damaging part
 
     #Going back to script.rpy if either sides died
     if playercurhp <= 0:
-        show sib diam sedih behind user
+        show sib sedih behind user
         show user sedih
-        "Kamu kalah! Musuh telah memenangkan partarungan."
-        $curexp -= 10
+        "Kamu kalah! Time Bandit telah memenangkan partarungan."
+        $curexp -= 15
 
         if curexp <= 0:
             $curexp = 0
-        "EXP kamu berkurang 10 karena telah kalah melawan musuh."
+        "Kamu kehilangan 15 EXP karena telah kalah melawan Time Bandit."
 
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
@@ -734,13 +870,15 @@ label attack: #damaging part
             jump mapStart
 
     elif enemycurhp <= 0:
-        show sib diam senang behind user
+        show sib senang behind user 
         show user senang
         
-        "Kamu menang! Musuh berhasil dikalahkan."
-        "Kamu mendapatkan 15 EXP."
+        "Kamu menang! Time Bandit berhasil dikalahkan."
+        
 
         call xpgain from _call_xpgain
+
+        "Kamu mendapatkan [expNum] EXP karena telah memenangkan pertarungan."
 
         $Hide("hpbar", transition=Dissolve(1.0))()
         $Hide("healths", transition=Dissolve(1.0))()
@@ -841,8 +979,10 @@ label switch: #switch turn
     return
 
 label xpgain:
-    $curexp += 15 + 3*expmulti
+    $curexp += 25 + 3*expmulti
     $curexp = int(curexp)
+    $expNum = 25 + 3*expmulti
+    $expNum = int(expNum)
 
     if curexp >= maxexp:
         $curexp = maxexp
