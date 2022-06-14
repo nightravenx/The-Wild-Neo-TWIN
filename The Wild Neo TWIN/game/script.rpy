@@ -52,6 +52,10 @@ image mika diam senang = "Character/MIKA/diam/senang.png"
 image mika diam marah = "Character/MIKA/diam/marah.png"
 image mika diam sedih = "Character/MIKA/diam/sedih.png"
 
+# image tb
+image tb common biasa = "Character/tb/common/biasa.png"
+image tb common diam biasa = "Character/tb/common/diam/biasa.png"
+
 image mika biasa flip= im.Flip("Character/MIKA/biasa.png", horizontal=True)
 image mika senang flip= im.Flip("Character/MIKA/senang.png", horizontal=True)
 image mika marah flip= im.Flip("Character/MIKA/marah.png", horizontal=True)
