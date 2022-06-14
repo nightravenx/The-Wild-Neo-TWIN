@@ -66,17 +66,30 @@ image mika diam senang flip= im.Flip("Character/MIKA/diam/senang.png", horizonta
 image mika diam marah flip= im.Flip("Character/MIKA/diam/marah.png", horizontal=True)
 image mika diam sedih flip= im.Flip("Character/MIKA/diam/sedih.png", horizontal=True)
 
+image splashTWIN = "splashTWIN.png"
 style game_tb:
     background Frame("images/button_idle.png")
     hover_background Frame("images/button_hover.png")
 
+transform charButton:
+    zoom 0.9
+
 default user = "Miko"
 default sib = "Mika"
 
+
+
+label splashscreen:
+    scene black
+    $renpy.pause(1.0,hard=True)
+    scene splashTWIN with Dissolve(2.0)
+    $renpy.pause(3.0,hard=True)
+    scene black with dissolve
+    $renpy.pause(1.0,hard=True)
+    return
 label start:
     scene expression "#000"
-    with Dissolve(2.0) #untuk smooth transition setelah klik new game
-
+    with Dissolve(1.0) #untuk smooth transition setelah klik new game
 
 #################################################################################
 # SEQUENCE 01 - PROLOG
@@ -210,36 +223,68 @@ label start:
 
     
 # shot no 9
-    call screen karakter
+    jump charSelect
+
+label charSelect:
+    window hide dissolve
+    show screen karakter with dissolve 
+    
+    $renpy.pause(None,hard=True)
 
 screen karakter:
-    frame:
-        xalign 0.5 yalign 0.2
-        xsize 1400 ysize 1050
-        background Frame("images/UI/1.png")
+    frame at alpha_dissolve:
+        xalign 0.5 yalign 0.5
+        xsize 1500 ysize 1050
+        background Frame("images/UI/6.png")
         vbox:
-            xalign 0.5 ypos 150
-            spacing 100
-            text "PILIHLAH KARAKTER ANDA" size 48 minwidth 100 xalign 0.5 yalign 1.0
+            xalign 0.5 ypos 0.063
+            spacing 20
+            text "Pilihlah karakter Anda" color "#000000" size 48 minwidth 100 xalign 0.5 yalign 1.0 style "black_font"
             hbox:
                 spacing 200
                 vbox:
+                    # text "MIKO" size 36 xalign 0.5 ypos 100
                     imagebutton:
                         auto "images/Character/MIKO/miko_%s.png"
-                        xalign 0.3 ypos 70
-                        action [SetVariable("user", "Miko"), SetVariable("sib", "Mika"), Hide("karakter"), Jump("next")]
-                    text "MIKO" size 36 xalign 0.3 ypos 100
+                        xalign 0.3 ypos 100
+                        action [SetVariable("user", "Miko"), SetVariable("sib", "Mika"), Hide("karakter", transition=dissolve), Hide("displayNameText", transition=dissolve), Jump("next")]
+                        at charButton
+
+                        hovered Show("displayNameText", displayName = "Miko")
+                        unhovered Hide("displayNameText")
+
                 vbox:
+                    # text "MIKA" size 36 xalign 0.5 ypos 100
                     imagebutton:
                         auto "images/Character/MIKA/mika_%s.png"
-                        xalign 0.3 ypos 70
-                        action [SetVariable("user", "Mika"), SetVariable("sib", "Miko"), Hide("karakter"), Jump("next")]
-                    text "MIKA" size 36 xalign 0.5 ypos 100
+                        xalign 0.3 ypos 100
+                        action [SetVariable("user", "Mika"), SetVariable("sib", "Miko"), Hide("karakter", transition=dissolve), Hide("displayNameText", transition=dissolve), Jump("next")]
+                        at charButton
+
+                        hovered Show("displayNameText", displayName = "Mika")
+                        unhovered Hide("displayNameText")
+
+                    
+screen displayNameText:
+    default displayName = ""
+    vbox:
+        xalign 0.5
+        yalign 0.22
+        frame:
+            xsize 350
+            ysize 100
+            background Frame("images/UI/5.png")
+            vbox:
+                xalign 0.5
+                yalign 0.5
+                text displayName color "#FFFFFF"
 
 # shot no 10
 label next:
-    scene bg lab
+    window show dissolve
 
+    scene bg lab with dissolve
+    
     show mika diam biasa at right:
         xalign 0.95
     show miko biasa at left:
@@ -254,7 +299,7 @@ label next:
         xalign 0.95
     show miko diam biasa at left:
         xalign 0.05
-    mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Miko."
+    mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Mik0."
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide miko diam biasa
@@ -816,7 +861,7 @@ label next:
 #################################################################################
 label surabaya:
 # shot no 1
-    scene bg portal
+    scene bg portal with fade
 
     "Miko dan Mika berhasil mengalahkan Time Bandit hingga membuatnya terjatuh dan tidak berdaya.{w=4}{nw}"
     with Dissolve(0.5)
@@ -895,7 +940,7 @@ label surabaya:
     show tb c biasa at right:
         xalign 0.9
     miko "Mengembalikan kamu ke waktu asalmu! Tidak akan kubiarkan kamu memburu dan menangkap hewan disini!"
-    with Dissolve(0nm aaa.5)
+    with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide mika diam biasa
     hide miko marah
@@ -908,7 +953,7 @@ label surabaya:
     show tb c biasa at right:
         xalign 0.9
     tb "Hah, kamu kira aku datang kesini sendirian? Bos membawa pasukan Time Bandit yang sangat banyak tahu!"
-    with Dissolve(0nm aaa.5)
+    with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide mika diam biasa
     hide miko diam marah
@@ -921,7 +966,7 @@ label surabaya:
     show tb c biasa at right:
         xalign 0.9
     mika "Tapi faktanya kamu kan sendirian disini."
-    with Dissolve(0nm aaa.5)
+    with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide mika biasa
     hide miko diam marah
