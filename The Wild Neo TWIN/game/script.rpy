@@ -74,6 +74,9 @@ default user = "Miko"
 default sib = "Mika"
 
 label start:
+    scene expression "#000"
+    with Dissolve(2.0) #untuk smooth transition setelah klik new game
+
 
 #################################################################################
 # SEQUENCE 01 - PROLOG
@@ -204,6 +207,7 @@ label start:
     "(Dengan niat mengembalikan keanekaragaman hewan di Indonesia, mereka berniat menciptakan mesin waktu){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
+
     
 # shot no 9
     call screen karakter
@@ -216,7 +220,7 @@ screen karakter:
         vbox:
             xalign 0.5 ypos 150
             spacing 100
-            text "PILIHLAH KARAKTER" size 48 minwidth 100 xalign 0.5 yalign 1.0
+            text "PILIHLAH KARAKTER ANDA" size 48 minwidth 100 xalign 0.5 yalign 1.0
             hbox:
                 spacing 200
                 vbox:
