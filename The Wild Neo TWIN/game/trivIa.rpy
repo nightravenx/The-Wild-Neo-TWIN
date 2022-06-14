@@ -15,6 +15,11 @@ define foundQuestion = False
 define ind = -1 #index
 define indPhys = 0
 
+define color0 = ""
+define color1 = ""
+define color2 = ""
+define color3 = ""
+
 label randomtriv:
     $renpy.random.shuffle(trivListEl)
     $renpy.random.shuffle(trivListPhys)
@@ -77,6 +82,28 @@ label trivia:
     $ answers3 = answers[2]
     $ answers4 = answers[3]
     $ answercheck = ""
+
+    if answers1 == corrects:
+        $color0 = "#00FF00"
+        $color1 = "#FF0000"
+        $color2 = "#FF0000"
+        $color3 = "#FF0000"
+    elif answers2 == corrects:
+        $color0 = "#FF0000"
+        $color1 = "#00FF00"
+        $color2 = "#FF0000"
+        $color3 = "#FF0000"
+    elif answers3 == corrects:
+        $color0 = "#FF0000"
+        $color1 = "#FF0000"
+        $color2 = "#00FF00"
+        $color3 = "#FF0000"
+    elif answers4 == corrects:
+        $color0 = "#FF0000"
+        $color1 = "#FF0000"
+        $color2 = "#FF0000"
+        $color3 = "#00FF00"
+
     jump trivia1
 
 
@@ -119,11 +146,6 @@ init:
         "correct" : "Ayam, bebek, dan angsa",
         "type" : "ipa"},
 
-        {"question" : "Ciri yang dapat diamati pada ayam dan kucing yang akan kawin adalah ...", 
-        "answer" : ["Berkejar-kejaran", "Menari di hadapan betinanya", "Membuat sarang", "Mengeluarkan tarian khusus"], 
-        "correct" : "Berkejar-kejaran",
-        "type" : "ipa"},
-
         {"question" : "Sel kelamin betina yang terdapat pada bunga disebut ...", 
         "answer" : ["Kelopak", "Benang sari", "Mahkota", "Putik"], 
         "correct" : "Putik",
@@ -135,8 +157,8 @@ init:
         "type" : "ipa"},
 
         {"question" : "Salah satu tumbuhan yang berkembang biak dengan umbi lapis yaitu ...", 
-        "answer" : ["Rumput teki", "Sukun", "Bunga bakung", "Ubi jalar"], 
-        "correct" : "Bunga bakung",
+        "answer" : ["Rumput teki", "Sukun", "Bawang Merah", "Ubi jalar"], 
+        "correct" : "Bawang Merah",
         "type" : "ipa"},
 
         # 10 - 20
@@ -150,9 +172,9 @@ init:
         "correct" : "Bunga",
         "type" : "ipa"},
 
-        {"question" : "Berikut ini merupakan perkembangbiakan vegatatif alami adalah ...", 
-        "answer" : ["Mencangkok", "Setek", "Geragih", "Okulasi"], 
-        "correct" : "Geragih",
+        {"question" : "Berikut ini merupakan perkembangbiakan vegetatif alami adalah ...", 
+        "answer" : ["Mencangkok", "Stek", "Umbi Batang", "Okulasi"], 
+        "correct" : "Umbi Batang",
         "type" : "ipa"},
 
         {"question" : "Berikut adalah bagian-bagian yang terdapat pada bunga, kecuali ...", 
@@ -197,8 +219,8 @@ init:
         "type" : "ipa"},
 
         {"question" : "Perkembangbiakan vegatatif buatan yang dilakukan dengan menanam bagian tertentu dari tumbuhan tanpa menunggu tumbuhnya akar disebut ...", 
-        "answer" : ["Geragih", "Setek", "Mencangkok", "Okulasi"], 
-        "correct" : "Setek",
+        "answer" : ["Geragih", "Stek", "Mencangkok", "Okulasi"], 
+        "correct" : "Stek",
         "type" : "ipa"},
 
         {"question" : "Berikut adalah tumbuhan yang berkembang biak secara tunas ...", 
@@ -212,8 +234,8 @@ init:
         "type" : "ipa"},
 
         {"question" : "Contoh tumbuhan yang berkembang biak dengan cara umbi lapis adalah ...", 
-        "answer" : ["Bawang merah, kentang, dan bawang putih", "Jambu, mangga, dan rambutan", "Tebu, bambu, dan pisang", "Bawang merah, bawang putih, dan bawang bombay"], 
-        "correct" : "Bawang merah, bawang putih, dan bawang bombay",
+        "answer" : ["Bawang merah, kentang, dan bawang putih", "Jambu, mangga, dan rambutan", "Tebu, bambu, dan pisang", "Bawang merah, bawang putih, dan bawang bombai"], 
+        "correct" : "Bawang merah, bawang putih, dan bawang bombai",
         "type" : "ipa"},
 
         {"question" : "Di bawah ini yang merupakan ciri bunga yang penyerbukannya dibantu oleh hewan adalah ...", 
@@ -223,7 +245,7 @@ init:
 
         {"question" : "Setelah penyerbukan maka akan terjadi proses pembuahan (fertilisasi) yang terjadi di ...", 
         "answer" : ["Mahkota bunga", "Bakal biji", "Dasar bunga", "Kelopak"], 
-        "correct" : "Bakal biji",
+        "correct" : "Dasar bunga",
         "type" : "ipa"},
         
         {"question" : "Pelestarian makhluk hidup bertujuan untuk menjaga agar makhluk hidup tidak ...", 
@@ -270,8 +292,8 @@ init:
         "type" : "ips"},
         
         {"question" : "Provinsi Timor Timur berdiri sebagai negara baru pada tahun ...", 
-        "answer" : ["1979", "1989", "1999", "2000"], 
-        "correct" : "1999",
+        "answer" : ["1979", "1989", "2002", "2000"], 
+        "correct" : "2002",
         "type" : "ips"},
         
         {"question" : "Pada masa awal kemerdekaan Kepulauan Nusa Tenggara disebut Provinsi ...", 
@@ -297,7 +319,7 @@ init:
         #10-20
         {"question" : "Indonesia terletak diantara dua benua dan dua samudra sehingga mendapat sebutan ...", 
         "answer" : ["Nusantara", "Maritim", "Agraris", "Zamrud Khatulistiwa"], 
-        "correct" : "Nusantara",
+        "correct" : "Maritim",
         "type" : "ips"},
         
         {"question" : "Untuk mengatur jalannya pemerintahan wilayah NKRI dibagi atas beberapa ...", 
@@ -310,14 +332,9 @@ init:
         "correct" : "menjaga keharmonisan",
         "type" : "ips"},
         
-        {"question" : "Contoh masalah sosial di Indonesia maupun negara tetangga adalah ...", 
-        "answer" : ["kemakmuran", "kemajuan", "kesejahteraan", "kemiskinan"], 
-        "correct" : "kemakmuran",
-        "type" : "ips"},
-        
-        {"question" : "Secara astronomis wilayah Indonesia terletak antara ...", 
-        "answer" : ["60 LU – 110 LS dan 950 BT – 1410 BT", "60 LU – 110 LU dan 950 BT – 1410 BT", "60 LU – 110 LU dan 950 BB – 1410 BT", "60 LU – 110 LS dan 950 BB – 1410 BT"], 
-        "correct" : "60 LU – 110 LS dan 950 BT – 1410 BT",
+        {"question" : "Secara astronomis wilayah Indonesia terletak antara ... (dalam derajat)", 
+        "answer" : ["6 LU – 11 LS dan 95 BT – 141 BT", "6 LU – 11 LU dan 95 BT – 141 BT", "6 LU – 11 LU dan 95 BB – 141 BT", "6 LU – 11 LS dan 95 BB – 141 BT"], 
+        "correct" : "6 LU – 11 LS dan 95 BT – 141 BT",
         "type" : "ips"},
         
         {"question" : "Negara di Asia Tenggara yang merupakan tujuan wisata yang paling populer adalah ...", 
@@ -336,13 +353,13 @@ init:
         "type" : "ips"},
         
         {"question" : "Penduduk asli Australia adalah ...", 
-        "answer" : ["Aborigin", "Negro", "Eskimo", "Indian"], 
+        "answer" : ["Aborijin", "Negro", "Eskimo", "Indian"], 
         "correct" : "Aborigin",
         "type" : "ips"},
         
         {"question" : "Antara Benua Asia dan Benua Afrika dibatasi oleh ...", 
-        "answer" : ["Laut Kaspia", "Pegunungan Ural", "Laut Hitam", "Terusan Suez"], 
-        "correct" : "Terusan Suez",
+        "answer" : ["Laut Kaspia", "Pegunungan Ural", "Laut Hitam", "Laut Merah"], 
+        "correct" : "Laut Merah",
         "type" : "ips"},
         
         #20-29
@@ -360,6 +377,11 @@ init:
         "answer" : ["KPK", "Bakornas", "LSM", "BMKG"], 
         "correct" : "BMKG",
         "type" : "ips"},
+
+        {"question" : "Arti dari globalisasi adalah ....", 
+        "answer" : ["Adanya ketergantungan satu negara dengan negara lain", "Proses hilangnya identitas suatu bangsa", "Proses mendunia dalam segala aspek kehidupan", "Proses hancurnya budaya lokal oleh budaya dunia"], 
+        "correct" : "Proses mendunia dalam segala aspek kehidupan",
+        "type" : "ips"},
         
         {"question" : "Gejala alam yang sering terjadi di Filipina adalah ...", 
         "answer" : ["Gunung meletus dan badai tropis", "Badai salju dan longsor", "Banjir dan erosi", "Gempa bumi dan Tsunami"], 
@@ -368,12 +390,12 @@ init:
         
         {"question" : "Bila ada tanda-tanda akan terjadinya Tsunami, yang segera kita lakukan adalah ...", 
         "answer" : ["Mendekati pantai untuk mengukur besarnya gelombang", "Pergi menjauhi pantai dan mencari tempat yang tinggi", "Tinggal di dalam rumah", "Sembunyi di bawah tempat tidur"], 
-        "correct" : "Mendekati pantai untuk mengukur besarnya gelombang",
+        "correct" : "Pergi menjauhi pantai dan mencari tempat yang tinggi",
         "type" : "ips"},
         
         {"question" : "Membuang sampah di sungai dapat menyebabkan bencana ...", 
         "answer" : ["Banjir", "Gempa", "Longsor", "Kebakaran"], 
-        "correct" : "Kebakaran",
+        "correct" : "Banjir",
         "type" : "ips"},
         
         {"question" : "Apabila terjadi gempa dan berada di dalam rumah, hal yang harus dilakukan adalah ...", 
@@ -387,8 +409,8 @@ init:
         "type" : "ips"},
         
         {"question" : "Alat untuk mencatat gempa bumi disebut ...", 
-        "answer" : ["Seismograf", "Anemometer", "Seismologi", "Termometer"], 
-        "correct" : "Seismograf",
+        "answer" : ["Seismometer", "Anemometer", "Seismologi", "Termometer"], 
+        "correct" : "Seismometer",
         "type" : "ips"},
 
 ################################################################################################################################################
@@ -420,8 +442,8 @@ init:
         "type" : "bi"},
 
         {"question" : "Hal-hal yang tidak boleh dilakukan ketika menyampaikan pesan kepada orang lain adalah ...", 
-        "answer" : ["menyampaikan pesan apa adanya", "ditambah-tambahi agar lebih meyakinkan", "diulangi jika penerima pesan jika belum jelas", "disampaikan dengan kalimat yang jelas"], 
-        "correct" : "ditambah-tambahi agar lebih meyakinkan",
+        "answer" : ["menyampaikan pesan apa adanya", "melebih-lebihkan pesan", "diulangi jika penerima pesan jika belum jelas", "disampaikan dengan kalimat yang jelas"], 
+        "correct" : "melebih-lebihkan pesan",
         "type" : "bi"},
 
         {"question" : "Kalimat di bawah ini yang menyatakan laporan adalah ...", 
@@ -430,8 +452,8 @@ init:
         "type" : "bi"},
 
         {"question" : "Langkah berikut ini yang tidak digunakan dalam menemukan informasi bacaan adalah ...", 
-        "answer" : ["membaca bacaan dengan sungguh-sungguh", "menyimpulkan isi bacaan atau mengambil garis besar isi bacaan", "membaca bacaan secara cepat", "memahami isi bacaan"], 
-        "correct" : "membaca bacaan secara cepat",
+        "answer" : ["membaca bacaan dengan sungguh-sungguh", "menyimpulkan isi bacaan atau mengambil garis besar isi bacaan", "membaca bacaan cepat mungkin", "memahami isi bacaan"], 
+        "correct" : "membaca bacaan cepat mungkin",
         "type" : "bi"},
 
         {"question" : "Di bawah ini yang termasuk pujian adalah ...", 
@@ -466,8 +488,8 @@ init:
         "type" : "bi"},
 
         {"question" : "Berkut ini kalimat yang menunjukkan latar tempat adalah ...", 
-        "answer" : ["Ayah menyiram tanaman.", "Adik bermain boneka.", "Budi mandi dua kali sehari.", "Hari ini di Jakarta terjadi banjir"], 
-        "correct" : "Hari ini di Jakarta terjadi banjir",
+        "answer" : ["Ayah menyiram tanaman.", "Adik bermain boneka.", "Budi mandi dua kali sehari.", "Hari ini, di Jakarta terjadi banjir"], 
+        "correct" : "Hari ini, di Jakarta terjadi banjir",
         "type" : "bi"},
 
         {"question" : "Temanmu suka menyontek pekerjaan teman yang lain. Kritikan yang tepat untuk situasi tersebut adalah ...", 
@@ -541,7 +563,7 @@ init:
 ############################################################################################################################################
 
         #1-10 PPKn
-        {"question" : "Formulasi Pancasila yang resmi tercanntum dalam pembukaan UUD 1945, yaitu di paragraf ...", 
+        {"question" : "Formulasi Pancasila yang resmi tercanntum dalam pembukaan UUD 1945, yaitu di alinea ...", 
         "answer" : ["Pertama", "Kedua", "Ketiga", "Keempat"], 
         "correct" : "Keempat",
         "type" : "ppkn"},
