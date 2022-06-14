@@ -207,29 +207,30 @@ label start:
     
 # shot no 9
     call screen karakter
-        screen karakter:
-            frame:
-                xalign 0.5 yalign 0.2
-                xsize 1400 ysize 1050
-                background Frame("images/UI/1.png")
+
+screen karakter:
+    frame:
+        xalign 0.5 yalign 0.2
+        xsize 1400 ysize 1050
+        background Frame("images/UI/1.png")
+        vbox:
+            xalign 0.5 ypos 150
+            spacing 100
+            text "PILIHLAH KARAKTER" size 48 minwidth 100 xalign 0.5 yalign 1.0
+            hbox:
+                spacing 200
                 vbox:
-                    xalign 0.5 ypos 150
-                    spacing 100
-                    text "PILIHLAH KARAKTER" size 48 minwidth 100 xalign 0.5 yalign 1.0
-                    hbox:
-                        spacing 200
-                        vbox:
-                            imagebutton:
-                                auto "images/Character/MIKO/miko_%s.png"
-                                xalign 0.3 ypos 70
-                                action [SetVariable("user", "Miko"), SetVariable("sib", "Mika"), Hide("karakter"), Jump("next")]
-                            text "MIKO" size 36 xalign 0.3 ypos 100
-                        vbox:
-                            imagebutton:
-                                auto "images/Character/MIKA/mika_%s.png"
-                                xalign 0.3 ypos 70
-                                action [SetVariable("user", "Mika"), SetVariable("sib", "Miko"), Hide("karakter"), Jump("next")]
-                            text "MIKA" size 36 xalign 0.5 ypos 100
+                    imagebutton:
+                        auto "images/Character/MIKO/miko_%s.png"
+                        xalign 0.3 ypos 70
+                        action [SetVariable("user", "Miko"), SetVariable("sib", "Mika"), Hide("karakter"), Jump("next")]
+                    text "MIKO" size 36 xalign 0.3 ypos 100
+                vbox:
+                    imagebutton:
+                        auto "images/Character/MIKA/mika_%s.png"
+                        xalign 0.3 ypos 70
+                        action [SetVariable("user", "Mika"), SetVariable("sib", "Miko"), Hide("karakter"), Jump("next")]
+                    text "MIKA" size 36 xalign 0.5 ypos 100
 
 # shot no 10
 label next:
@@ -457,7 +458,7 @@ label next:
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
 # shot no 14
-scene bg portal1
+    scene bg portal1
     "(Tiba-tiba, layar mesin berubah menjadi merah dan menampilkan pesan kesalahan){w=4}{nw}"
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
