@@ -299,7 +299,7 @@ label next:
         xalign 0.95
     show miko diam biasa at left:
         xalign 0.05
-    mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Mik0."
+    mika "Ide yang menarik! Tapi kamu tahu kan, time-travelling itu tidak mungkin bisa dilakukan? Kita tidak bisa kembali ke masa lalu, Miko."
     with Dissolve(0.5)
     $ renpy.pause(0.5, hard=True)
     hide miko diam biasa
