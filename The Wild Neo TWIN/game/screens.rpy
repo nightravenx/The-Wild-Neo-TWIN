@@ -1,4 +1,4 @@
-################################################################################
+﻿################################################################################
 ## Initialization
 ################################################################################
 
@@ -296,48 +296,62 @@ screen navigation():
             xpos 0.2
             yalign 0.8
         else:
-            xalign 0.05
-            yalign 0.8
+            xalign 0.04
+            yalign 0.4
         spacing gui.navigation_spacing
 
-       if renpy.get_screen("main_menu"):
+        if renpy.get_screen("main_menu"):
 
             button:
                 text "New Game" xalign 0.5 yalign 0.5 style ("mm_font")
-                xysize(262,50)
+                xysize(340,70)
                 style "mm_button"
                 action Start()
 
         else:
 
-            textbutton _("History") action ShowMenu("history")
+            button:
+                text "History" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(340,70)
+                style "mm_button"
+                action ShowMenu("history")
 
-            textbutton _("Save") action ShowMenu("save")
+            button:
+                text "Save" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(340,70)
+                style "mm_button"
+                action ShowMenu("save")
 
         button:
             text "Load" xalign 0.5 yalign 0.5 style ("mm_font")
-            xysize(262,50)
+            xysize(340,70)
             style "mm_button"
             action ShowMenu("load")
 
         button:
             text "Settings" xalign 0.5 yalign 0.5 style ("mm_font")
-            xysize(262,50)
-            style "mm_button"
+            xysize(340,70)
+            style "mm_button" 
             action ShowMenu("preferences")
 
         if _in_replay:
 
-            textbutton _("End Replay") action EndReplay(confirm=True)
+            button:
+                text "End Replay" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(340,70)
+                style "mm_button"  action EndReplay(confirm=True)
 
-        elif not main_menu:
+        elif not renpy.get_screen("main_menu"):
 
-            textbutton _("Main Menu") action MainMenu()
+            button:
+                text "Title" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(340,70)
+                style "mm_button"  action MainMenu()
 
         button:
             text "Credit" xalign 0.5 yalign 0.5 style ("mm_font")
-            xysize(262,50)
-            style "mm_button"
+            xysize(340,70)
+            style "mm_button" 
             action ShowMenu("about")
 
         if renpy.variant("pc") or (renpy.variant("web") and not renpy.variant("mobile")):
@@ -345,17 +359,18 @@ screen navigation():
             ## Help isn't necessary or relevant to mobile devices.
             button:
                 text "Help" xalign 0.5 yalign 0.5 style ("mm_font")
-                xysize(262,50)
-                style "mm_button"
+                xysize(340,70)
+                style "mm_button" 
                 action ShowMenu("help")
 
         if renpy.variant("pc"):
 
             ## The quit button is banned on iOS and unnecessary on Android and
             ## Web.
-            text "Exit" xalign 0.5 yalign 0.5 style ("mm_font")
-                xysize(262,50)
-                style "mm_button"
+            button:
+                text "Exit" xalign 0.5 yalign 0.5 style ("mm_font")
+                xysize(340,70)
+                style "mm_button" 
                 action Quit(confirm=not main_menu)
 
 
@@ -497,8 +512,12 @@ screen game_menu(title, scroll=None, yinitial=0.0):
 
     use navigation
 
-    textbutton _("Return"):
-        style "return_button"
+    button:
+        text "Return" xalign 0.5 yalign 0.5 style ("mm_font")
+        xysize(340,70)
+        style "mm_button"
+        yalign 0.9
+        xalign 0.04
 
         action Return()
 
@@ -582,12 +601,20 @@ screen about():
 
             label "[config.name!t]"
             text _("Version [config.version!t]\n")
-            
+
             text _("{b}Special thanks to:{/b}\n\n")
             
-            text _("{b}Beckground music:{/b}\n")
-            text _("{a=https://opengameart.org/users/cleytonkauffman}CleytonKauffman{/a}\n")
+            text _("{b}Background music:{/b}\n")
+
+            text _("{b}Battle BGM{/b}\n")
+            text _("{a=https://opengameart.org/users/cleytonkauffman}CleytonKauffman{/a}\n\n")
+
+            text _("{b}SFX:{/b}\n")
+
+            text _("{b}Laser SFX{/b}\n")
+            text _("{a=https://opengameart.org/users/skorpio}Skorpio{/a}\n\n")
             
+
             ## gui.about is usually set in options.rpy.
             if gui.about:
                 text "[gui.about!t]\n"
