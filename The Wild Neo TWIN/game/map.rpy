@@ -1,4 +1,6 @@
-define placeUnlocked = 1
+define placeUnlocked = 0
+define firstNotice = True
+define firstDemo = True
 
 #animations
 image chibi animated a:
@@ -10,7 +12,14 @@ image chibi animated a:
     linear 1.0 ypos 830
     repeat
 
-    
+image pointer animated a:
+    "pointer"
+    xpos 655  ypos 570
+    xpos 655
+    linear 1.0 ypos 595
+    xpos 655
+    linear 1.0 ypos 570
+    repeat
 
 image chibi animated b:
     "chibi together"
@@ -43,9 +52,23 @@ label mapStart:
     window hide dissolve
 
     call unlockMap
-
-    show screen buttonMap with dissolve
-    show chibi animated a with dissolve
+    if placeUnlocked <= 1:
+        show screen buttonMap0 with dissolve
+    else:
+        if firstNotice == True:
+            $firstNotice = False
+            window show dissolve
+            "Grind Area dan Upgrade Stat telah terbuka."
+        if firstDemo == True:
+            $firstDemo = False
+            "Terima kasih telah memainkan versi demo dari game ini."
+            window hide dissolve
+        show screen buttonMap with dissolve
+        
+    show chibi animated a
+    if placeUnlocked <= 1:
+        show pointer animated a
+    with dissolve
     
     
     $renpy.pause(None,hard=True)
@@ -53,8 +76,13 @@ label mapStart:
 label mapStart1:
     call unlockMap
 
-    show screen buttonMap
+    if placeUnlocked <= 1:
+        show screen buttonMap0
+    else:
+        show screen buttonMap
     show chibi animated a
+    if placeUnlocked <= 1:
+        show pointer animated a
     with dissolve
     $renpy.pause(None,hard=True)
 
@@ -64,6 +92,24 @@ label unlockMap:
     return
 
 # xpos 837  ypos 700
+
+screen buttonMap0:
+    # button:
+    #     xalign 1.0 yalign 0.0
+    #     text "Grind Area" xalign 0.5 yalign 0.5 style ("grindArea_font")
+    #     xysize(400,90)
+    #     style "grindArea_button"
+    #     action Hide("buttonMap", transition=dissolve), Jump("grindArea")
+    # button:
+    #     xalign 0.73 yalign 0.0
+    #     text "Upgrade Stat" xalign 0.5 yalign 0.5 style ("grindArea_font")
+    #     xysize(400,90)
+    #     style "grindArea_button"
+    #     action Hide("buttonMap", transition=dissolve), Call("upstart")
+    imagebutton:
+        auto "images/Game map/jawa surabaya button_%s.png" xpos 615  ypos 590
+        sensitive ch1Map
+        action Hide("buttonMap", transition=dissolve), Jump("ch1Move")
 
 screen buttonMap:
     button:
@@ -158,7 +204,9 @@ label grindArea:
 
 
 label ch1Move:
+    hide pointer animated a with dissolve
     show chibi animated b with MoveTransition(2.0)
+    
     $renpy.pause(1.0,hard=True)
     scene black with fade
     window show
