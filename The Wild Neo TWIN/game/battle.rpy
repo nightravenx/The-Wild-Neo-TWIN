@@ -7,6 +7,7 @@ define windsfx = "audio/battle/wind.mp3"
 define throwsfx = "audio/battle/throw.mp3"
 define bubblesfx = "audio/battle/bubble.mp3"
 define punchsfx = "audio/battle/punch.mp3"
+define lasersfx = "audio/battle/laser.ogg"
 
 define audio.battlebgm = "audio/battle/battle.mp3"
 
@@ -24,7 +25,7 @@ image user hit animated:
 image tb common hit animated:
     "tb c hurt"
     pause 0.1
-    "tb c biasa"
+    "tb c defense"
     pause 0.1
     repeat 5
 
@@ -60,6 +61,9 @@ image sib diam senang = "Character/[sib!u]/diam/senang.png"
 image sib diam sedih = "Character/[sib!u]/diam/sedih.png"
 
 image tb c hurt = "Character/tb/common/hurt.png"
+image tb c attack = "Character/tb/common/attack.png"
+image tb c defense = "Character/tb/common/defense.png"
+
 
 #Style
 style move_button:
@@ -83,6 +87,8 @@ style mm_font:
     size 30
     hover_color "#ff0000"
     color "#000000"
+    insensitive_color "#8b8b8b"
+    
 style mm_button:
     background Frame("images/UI/button/button 3_idle.png")
     hover_background Frame("images/UI/button/button 3_hover.png")
@@ -333,7 +339,7 @@ screen healths:
         xsize 1980
         ysize 210
         background Frame("images/UI/3.png")
-        text "{i}Player{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
+        text "{i}[user] & [sib]{/i}" xalign 0.135 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{i}Lv [lvl]{/i}" xalign 0.35 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{i}Enemy{/i}" xalign 0.87 yalign 0.22 font "fonts/rexlia rg.otf"
         text "{color=[turndesccol]}[turndesc!u] TURN{/color}" xalign 0.5 yalign 0.5 size 50 font "fonts/rexlia rg.otf"
@@ -769,9 +775,10 @@ label attack: #damaging part
 
             play sound moveSFX
             show user attack 
-            $renpy.pause(0.5,hard=True)
+            $renpy.pause(0.2,hard=True)
             show tb common hit animated
-            $renpy.pause(1.5,hard=True)
+            $renpy.pause(1.8,hard=True)
+            show tb c biasa
             show user biasa
 
             if dmgto > 0:
@@ -796,9 +803,10 @@ label attack: #damaging part
 
         play sound punchsfx
         show sib attack
-        $renpy.pause(0.5,hard=True)
+        $renpy.pause(0.2,hard=True)
         show tb common hit animated
-        $renpy.pause(1.5,hard=True)
+        $renpy.pause(1.8,hard=True)
+        show tb c biasa
         show sib biasa
 
         if crit == True :
@@ -815,10 +823,12 @@ label attack: #damaging part
         $dmgto = int(dmgto)
         $playercurhp -= dmgto
 
-        play sound punchsfx
+        play sound lasersfx
+        show tb c attack 
+        $renpy.pause(0.2,hard=True)
         show user hit animated
-        $renpy.restart_interaction()
-        $renpy.pause(2.0,hard=True)
+        $renpy.pause(1.8,hard=True)
+        show tb c biasa
         show user biasa
 
         if effectivedesc == "not very effective":
@@ -846,6 +856,7 @@ label attack: #damaging part
     if playercurhp <= 0:
         show sib sedih behind user
         show user sedih
+        show tb c senang
         "Kamu kalah! Time Bandit telah memenangkan partarungan."
         $curexp -= 15
 
@@ -872,6 +883,7 @@ label attack: #damaging part
     elif enemycurhp <= 0:
         show sib senang behind user 
         show user senang
+        show tb c marah
         
         "Kamu menang! Time Bandit berhasil dikalahkan."
         
