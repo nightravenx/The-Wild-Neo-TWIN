@@ -1,4 +1,5 @@
 # TWIN-The Wild Neo by NEOGEE
+# cobain
 
 # Karakter Protagonis
 define mika = Character("Mika", color="#51d4eb", who_bold=True, who_outlines=[(1, "#000")])
